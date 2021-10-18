@@ -13,10 +13,19 @@ public class MeshGenerator : MonoBehaviour
 	
 	public Gradient gradient;
 	
-	public int xSize = 50;
-	public int zSize = 50;
+	public int xSize = 256;
+	public int zSize = 256;
 	
-	private float minTerrainHeight;
+	public int xCenter = 128;
+	public int zCenter = 128;
+	public float distanceFromCenterFalloffRate = 0.1f;
+	
+	public float seaLevel = 1f;
+	public Color underWaterColor;
+	
+	public int noiseOctaves = 3;
+	public float octaveScale = 2;
+	
 	private float maxTerrainHeight;
 	
     void Start()
@@ -27,7 +36,27 @@ public class MeshGenerator : MonoBehaviour
 		CreateMesh();
 		
     }
-
+	
+	float HeightAt(int x, int z)
+	{
+		float y = 0f;
+		float scale = octaveScale;
+		float amplitude = octaveScale;
+		for(int i = 0; i < noiseOctaves; i++)
+		{
+			y += Mathf.PerlinNoise(x / scale, z / scale) * amplitude;
+			scale *= octaveScale;
+			amplitude += octaveScale;
+		}
+		
+		float distanceToCenter = Vector2.Distance(new Vector2(xCenter, zCenter), new Vector2(x, z));
+		y -= distanceToCenter * distanceFromCenterFalloffRate;
+		
+		if(y < 0f)
+			y = 0f;
+		return y;
+	}
+	
     void CreateMesh()
 	{
 		//Define vertex positions
@@ -37,13 +66,12 @@ public class MeshGenerator : MonoBehaviour
 		{
 			for(int x = 0; x <= xSize; x++)
 			{
-				float y = Mathf.PerlinNoise(x * .3f, z * .3f) * 2f;
+				//float y = Mathf.PerlinNoise(x * .3f, z * .3f) * 2f;
+				float y = HeightAt(x, z);
 				vertices[i] = new Vector3(x, y, z);
 				
 				if(y > maxTerrainHeight)
 					maxTerrainHeight = y;
-				if(y < minTerrainHeight)
-					minTerrainHeight = y;
 				
 				i++;
 			}
@@ -77,8 +105,15 @@ public class MeshGenerator : MonoBehaviour
 		{
 			for(int x = 0; x <= xSize; x++)
 			{
-				float height = Mathf.InverseLerp(minTerrainHeight, maxTerrainHeight, vertices[i].y);
-				vertexColors[i] = gradient.Evaluate(height);
+				if(vertices[i].y >= seaLevel)
+				{
+					float height = Mathf.InverseLerp(seaLevel, maxTerrainHeight, vertices[i].y);
+					vertexColors[i] = gradient.Evaluate(height);
+				}
+				else
+				{
+					vertexColors[i] = underWaterColor;
+				}
 				i++;
 			}
 		}

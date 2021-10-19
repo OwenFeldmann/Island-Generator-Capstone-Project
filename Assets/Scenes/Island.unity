@@ -188,10 +188,14 @@ MonoBehaviour:
   xCenter: 128
   zCenter: 128
   distanceFromCenterFalloffRate: 0.2
-  seaLevel: 1
+  seaLevel: 3
   underWaterColor: {r: 0.107547104, g: 0.21254167, b: 1, a: 1}
+  noiseSeed: 0
+  noiseXScale: 0.3
+  noiseZScale: 0.3
   noiseOctaves: 5
-  octaveScale: 2
+  octaveFrequencyScale: 0.5
+  octaveAmplitudeScale: 2
 --- !u!23 &527093301
 MeshRenderer:
   m_ObjectHideFlags: 0

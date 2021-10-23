@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
-[RequireComponent(typeof(MeshFilter))]
+[RequireComponent(typeof(MeshFilter), typeof(MeshCollider))]
 public class MeshGenerator : MonoBehaviour
 {
 	//Generated mesh and relevant variables
@@ -50,6 +51,10 @@ public class MeshGenerator : MonoBehaviour
 	//Heighest point on the generated terrain. Used for coloring.
 	private float maxTerrainHeight;
 	
+	[Header("Nav Mesh")]
+	public NavMeshSurface surface;
+	public GameObject player;
+	
 	/*
 	Script starting location. Creates and displays generated terrain mesh.
 	*/
@@ -62,6 +67,11 @@ public class MeshGenerator : MonoBehaviour
 		
 		CreateMesh();
 		UpdateMesh();
+		GetComponent<MeshCollider>().sharedMesh = mesh;
+		
+		surface.BuildNavMesh();//works fine without this line, but it suppresses a warning message
+		Instantiate(player, vertices[vertices.Length/2], Quaternion.identity);
+		surface.BuildNavMesh();
 		
     }
 	

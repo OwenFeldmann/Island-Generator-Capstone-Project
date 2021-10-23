@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class BiomeGenerator : MonoBehaviour
 {
-    
-	MeshGenerator meshGenerator;
 	
 	//How many biomes should be generated
 	public int biomesToPlace = 10;
@@ -16,19 +14,20 @@ public class BiomeGenerator : MonoBehaviour
 	//An array of biomes to be defined in the editor
 	public Biome[] biomes;
 	
-    void Start()
+    public void GenerateBiomes()
     {
-        meshGenerator = GetComponent<MeshGenerator>();
-		GenerateBiomePoints();
+        MeshGenerator meshGenerator = GetComponent<MeshGenerator>();
+		GenerateBiomePoints(meshGenerator.xCenter, meshGenerator.zCenter);
+		GenerateBiomeTerrain(meshGenerator.vertices, meshGenerator.vertexColors, meshGenerator.seaLevel);
     }
 	
 	/*
 	Generate and place each biome point
 	*/
-    void GenerateBiomePoints()
+    void GenerateBiomePoints(float xCenter, float zCenter)
 	{
 		biomePoints = new BiomePoint[biomesToPlace];
-		Vector3 center = new Vector3(meshGenerator.xCenter, 0f, meshGenerator.zCenter);
+		Vector3 center = new Vector3(xCenter, 0f, zCenter);
 		for(int i = 0; i < biomesToPlace; i++)
 		{
 			Biome biome = biomes[Random.Range(0, biomes.Length)];
@@ -39,20 +38,25 @@ public class BiomeGenerator : MonoBehaviour
 	}
 	
 	/*
-	Testing by coloring terrain flattly based on biome
+	Generate terrain based on the relevant biome
 	*/
-	public void TESTGenerateBiomes()
+	void GenerateBiomeTerrain(Vector3[] vertices, Color[] colors, float seaLevel)
 	{
-		float seaLevel = meshGenerator.seaLevel;
-		Vector3[] vertices = meshGenerator.vertices;
-		Color[] colors = meshGenerator.vertexColors;
-		
 		for(int i = 0; i < vertices.Length; i++)
 		{
 			if(vertices[i].y >= seaLevel)
 			{
 				Biome biome = ClosestBiomePoint(vertices[i]).biome;
-				colors[i] = biome.gradient.Evaluate(0.5f);
+				
+				//Vertex height
+				float noiseValue = Noise.NoiseValue(vertices[i].x, vertices[i].z, biome.noiseXScale, biome.noiseZScale, biome.noiseOctaves, biome.octaveFrequencyScale, biome.octaveAmplitudeScale, true);
+				float y = biome.heightCurve.Evaluate(noiseValue) * biome.amplitudeScale;
+				if(y < seaLevel)
+					y = seaLevel;
+				vertices[i].y = y;
+				
+				//Color biome
+				colors[i] = biome.gradient.Evaluate(noiseValue);
 			}
 		}
 		

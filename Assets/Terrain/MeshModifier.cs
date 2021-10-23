@@ -28,13 +28,24 @@ public class MeshModifier
 	}
 	
 	/*
-	Moves every vertex to a random position within a sphere of radius: maxJiggle
+	Moves every vertex to a random position within a sphere of radius: maxJiggle.
+	Respects wether a point is above or below sea level.
 	*/
-	public void JiggleVertices(float maxJiggle = 0.3f)
+	public void JiggleVertices(float seaLevel, float maxJiggle = 0.3f)
 	{
+		bool aboveSeaLevel;
 		for(int i = 0; i < vertices.Length; i++)
 		{
+			
+			aboveSeaLevel = vertices[i].y >= seaLevel;
+			
 			vertices[i] += Random.insideUnitSphere * maxJiggle;
+			
+			if(aboveSeaLevel && vertices[i].y < seaLevel)
+				vertices[i].y = seaLevel;
+			else if(!aboveSeaLevel && vertices[i].y >= seaLevel)
+				vertices[i].y = seaLevel - 0.01f;
+				
 		}
 	}
 	

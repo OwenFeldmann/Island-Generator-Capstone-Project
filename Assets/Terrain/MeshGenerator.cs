@@ -31,8 +31,6 @@ public class MeshGenerator : MonoBehaviour
 	[Header("Noise Settings")]
 	//Seeds the noise function. Uses a random seed when set to 0.
 	public int noiseSeed = 0;
-	private float noiseXOffset = 0;
-	private float noiseZOffset = 0;
 	//Decrease to stretch terrain along the x-axis.
 	public float noiseXScale = 0.3f;
 	//Decrease to stretch terrain along the z-axis.
@@ -57,13 +55,13 @@ public class MeshGenerator : MonoBehaviour
         mesh = new Mesh();
 		GetComponent<MeshFilter>().mesh = mesh;
 		
-		SeedNoise(noiseSeed);
+		Noise.SeedNoise(noiseSeed);
 		
 		CreateMesh();
 		MeshModifier meshModifier = new MeshModifier(vertices);
 		meshModifier.FlattenTerrainToLevel(seaLevel);//just need to know what parts of the island are above water
-		GetComponent<BiomeGenerator>().TESTGenerateBiomes();
-		//meshModifier.JiggleVertices();//jiggle to add roughness to terrain
+		GetComponent<BiomeGenerator>().GenerateBiomes();
+		meshModifier.JiggleVertices(seaLevel);//jiggle to add roughness to terrain
 		UpdateMesh();
 		
 		Instantiate(player, vertices[vertices.Length/2], Quaternion.identity);
@@ -72,37 +70,18 @@ public class MeshGenerator : MonoBehaviour
     }
 	
 	/*
-	Seeds noise function by deciding an offset. Chooses a random seed when the given seed is 0.
-	*/
-	void SeedNoise(int seed)
-	{
-		if(seed == 0)
-			seed = Random.Range(-10000,10000);
-		Random.InitState(seed);
-		noiseXOffset = Random.Range(-10000, 10000);
-		noiseZOffset = Random.Range(-10000, 10000);
-	}
-	
-	/*
-	Returns a heigh value at the specified location, using the noise parameters specified in the editor.
+	Returns a height value at the specified location, using the noise parameters specified in the editor.
 	*/
 	private float HeightAt(int x, int z)
 	{
-		float y = 0f;
-		float scale = 1;
-		float amplitude = 1;
-		for(int i = 0; i < noiseOctaves; i++)
-		{
-			y += Mathf.PerlinNoise((x * noiseXScale * scale) + noiseXOffset, (z * noiseZScale * scale) + noiseZOffset) * amplitude;
-			scale *= octaveFrequencyScale;
-			amplitude *= octaveAmplitudeScale;
-		}
+		float y = Noise.NoiseValue((float)x, (float)z, noiseXScale, noiseZScale, noiseOctaves, octaveFrequencyScale, octaveAmplitudeScale, false);
 		
 		float distanceToCenter = Vector2.Distance(new Vector2(xCenter, zCenter), new Vector2(x, z));
 		y -= distanceToCenter * distanceFromCenterFalloffRate;
 		
 		if(y < 0f)
 			y = 0f;
+		
 		return y;
 	}
 	

@@ -552,27 +552,36 @@ MonoBehaviour:
       - serializedVersion: 3
         time: 0
         value: 0
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
+        inSlope: 6.0366254
+        outSlope: 6.0366254
+        tangentMode: 34
         weightedMode: 0
         inWeight: 0
-        outWeight: 0
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.08253147
+        value: 0.49821153
+        inSlope: 0.4394616
+        outSlope: 0.4394616
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.13734965
       - serializedVersion: 3
         time: 1
         value: 1
-        inSlope: 2
-        outSlope: 2
-        tangentMode: 0
+        inSlope: 0.5469272
+        outSlope: 0.5469272
+        tangentMode: 34
         weightedMode: 0
-        inWeight: 0
+        inWeight: 0.33333334
         outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    noiseXScale: 0.3
-    noiseZScale: 0.3
-    amplitudeScale: 0.2
+    noiseXScale: 1.2
+    noiseZScale: 1.2
+    amplitudeScale: 5
     noiseOctaves: 5
     octaveFrequencyScale: 0.5
     octaveAmplitudeScale: 2
@@ -612,17 +621,26 @@ MonoBehaviour:
       - serializedVersion: 3
         time: 0
         value: 0
-        inSlope: 0
-        outSlope: 0
+        inSlope: 2
+        outSlope: 2
         tangentMode: 0
         weightedMode: 0
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
+        time: 0.6530386
+        value: 0.8168983
+        inSlope: 0.484536
+        outSlope: 0.484536
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.30725405
+      - serializedVersion: 3
         time: 1
         value: 1
-        inSlope: 2
-        outSlope: 2
+        inSlope: 0
+        outSlope: 0
         tangentMode: 0
         weightedMode: 0
         inWeight: 0
@@ -630,9 +648,9 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    noiseXScale: 0.3
-    noiseZScale: 0.3
-    amplitudeScale: 0.5
+    noiseXScale: 2
+    noiseZScale: 2
+    amplitudeScale: 10
     noiseOctaves: 5
     octaveFrequencyScale: 0.5
     octaveAmplitudeScale: 2
@@ -648,10 +666,10 @@ MonoBehaviour:
       key6: {r: 0, g: 0, b: 0, a: 0}
       key7: {r: 0, g: 0, b: 0, a: 0}
       ctime0: 0
-      ctime1: 15806
-      ctime2: 28720
-      ctime3: 53006
-      ctime4: 65535
+      ctime1: 15420
+      ctime2: 27371
+      ctime3: 38936
+      ctime4: 45104
       ctime5: 0
       ctime6: 0
       ctime7: 0
@@ -672,17 +690,35 @@ MonoBehaviour:
       - serializedVersion: 3
         time: 0
         value: 0
-        inSlope: 0
-        outSlope: 0
+        inSlope: 0.09056604
+        outSlope: 0.09056604
         tangentMode: 0
         weightedMode: 0
         inWeight: 0
-        outWeight: 0
+        outWeight: 0.40964144
+      - serializedVersion: 3
+        time: 0.37524354
+        value: 0.14510962
+        inSlope: 0.5982081
+        outSlope: 0.5982081
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.46044254
+      - serializedVersion: 3
+        time: 0.7523805
+        value: 0.9507396
+        inSlope: 0.7702389
+        outSlope: 0.7702389
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
       - serializedVersion: 3
         time: 1
         value: 1
-        inSlope: 2
-        outSlope: 2
+        inSlope: 0
+        outSlope: 0
         tangentMode: 0
         weightedMode: 0
         inWeight: 0
@@ -690,9 +726,9 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    noiseXScale: 0.3
-    noiseZScale: 0.3
-    amplitudeScale: 1
+    noiseXScale: 0.7
+    noiseZScale: 0.7
+    amplitudeScale: 25
     noiseOctaves: 5
     octaveFrequencyScale: 0.5
     octaveAmplitudeScale: 2
@@ -702,17 +738,17 @@ MonoBehaviour:
       key0: {r: 0.35686278, g: 0.7176471, b: 0.71027946, a: 1}
       key1: {r: 0.28128338, g: 0.46226418, b: 0.3127583, a: 1}
       key2: {r: 0.23669456, g: 0.254717, b: 0.23904532, a: 0}
-      key3: {r: 0.4301353, g: 0.509434, b: 0.43446067, a: 0}
-      key4: {r: 1, g: 1, b: 1, a: 0}
-      key5: {r: 0, g: 0, b: 0, a: 0}
+      key3: {r: 1, g: 1, b: 1, a: 0}
+      key4: {r: 0.23529412, g: 0.25490198, b: 0.23921569, a: 0}
+      key5: {r: 0.4301353, g: 0.509434, b: 0.43446067, a: 0}
       key6: {r: 0, g: 0, b: 0, a: 0}
       key7: {r: 0, g: 0, b: 0, a: 0}
       ctime0: 0
-      ctime1: 44333
-      ctime2: 55705
-      ctime3: 62644
-      ctime4: 65535
-      ctime5: 0
+      ctime1: 26407
+      ctime2: 41634
+      ctime3: 43176
+      ctime4: 44718
+      ctime5: 65535
       ctime6: 0
       ctime7: 0
       atime0: 0
@@ -724,7 +760,7 @@ MonoBehaviour:
       atime6: 0
       atime7: 0
       m_Mode: 0
-      m_NumColorKeys: 5
+      m_NumColorKeys: 6
       m_NumAlphaKeys: 2
     heightCurve:
       serializedVersion: 2
@@ -732,26 +768,44 @@ MonoBehaviour:
       - serializedVersion: 3
         time: 0
         value: 0
-        inSlope: 0
-        outSlope: 0
+        inSlope: 0.33299235
+        outSlope: 0.33299235
         tangentMode: 0
         weightedMode: 0
         inWeight: 0
-        outWeight: 0
+        outWeight: 0.31545728
       - serializedVersion: 3
-        time: 0.9221278
-        value: 0.2826991
-        inSlope: 0.94304883
-        outSlope: 0.94304883
+        time: 0.61518544
+        value: 0.31925067
+        inSlope: 0.874674
+        outSlope: 0.874674
         tangentMode: 0
         weightedMode: 0
         inWeight: 0.33333334
-        outWeight: 0.8442935
+        outWeight: 1
+      - serializedVersion: 3
+        time: 0.662398
+        value: 1.1391752
+        inSlope: -0.018656539
+        outSlope: -0.018656539
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.60388595
+      - serializedVersion: 3
+        time: 0.7408857
+        value: 0.3121809
+        inSlope: -0.94680434
+        outSlope: -0.94680434
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.20042439
       - serializedVersion: 3
         time: 1
-        value: 1
-        inSlope: 2
-        outSlope: 2
+        value: 0.0010986328
+        inSlope: 0
+        outSlope: 0
         tangentMode: 0
         weightedMode: 0
         inWeight: 0
@@ -759,9 +813,9 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    noiseXScale: 0.3
-    noiseZScale: 0.3
-    amplitudeScale: 1.5
+    noiseXScale: 1.5
+    noiseZScale: 1.5
+    amplitudeScale: 25
     noiseOctaves: 5
     octaveFrequencyScale: 0.5
     octaveAmplitudeScale: 2
@@ -801,17 +855,26 @@ MonoBehaviour:
       - serializedVersion: 3
         time: 0
         value: 0
-        inSlope: 0
-        outSlope: 0
+        inSlope: 0.008203446
+        outSlope: 0.008203446
         tangentMode: 0
         weightedMode: 0
         inWeight: 0
-        outWeight: 0
+        outWeight: 0.2875
+      - serializedVersion: 3
+        time: 0.60140955
+        value: 0.944476
+        inSlope: 0.2499986
+        outSlope: 0.2499986
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.2674101
       - serializedVersion: 3
         time: 1
         value: 1
-        inSlope: 2
-        outSlope: 2
+        inSlope: 0
+        outSlope: 0
         tangentMode: 0
         weightedMode: 0
         inWeight: 0
@@ -819,9 +882,9 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    noiseXScale: 0.3
-    noiseZScale: 0.3
-    amplitudeScale: 0.2
+    noiseXScale: 1.5
+    noiseZScale: 1.5
+    amplitudeScale: 5
     noiseOctaves: 5
     octaveFrequencyScale: 0.5
     octaveAmplitudeScale: 2
@@ -829,17 +892,17 @@ MonoBehaviour:
     gradient:
       serializedVersion: 2
       key0: {r: 0.26540062, g: 0, b: 0.5568628, a: 1}
-      key1: {r: 0.972549, g: 0.12549019, b: 0.8639245, a: 1}
-      key2: {r: 0.972549, g: 0.12549019, b: 0.8639245, a: 0}
-      key3: {r: 0, g: 0, b: 0, a: 0}
+      key1: {r: 0.5921569, g: 0.044183474, b: 0.01568629, a: 1}
+      key2: {r: 0.37771678, g: 0.05490197, b: 0.6392157, a: 0}
+      key3: {r: 0.972549, g: 0.12549019, b: 0.8639245, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
       key5: {r: 0, g: 0, b: 0, a: 0}
       key6: {r: 0, g: 0, b: 0, a: 0}
       key7: {r: 0, g: 0, b: 0, a: 0}
       ctime0: 0
-      ctime1: 65535
-      ctime2: 65535
-      ctime3: 0
+      ctime1: 8096
+      ctime2: 15035
+      ctime3: 65535
       ctime4: 0
       ctime5: 0
       ctime6: 0
@@ -853,7 +916,7 @@ MonoBehaviour:
       atime6: 0
       atime7: 0
       m_Mode: 0
-      m_NumColorKeys: 2
+      m_NumColorKeys: 4
       m_NumAlphaKeys: 2
     heightCurve:
       serializedVersion: 2
@@ -868,14 +931,41 @@ MonoBehaviour:
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
-        time: 0.23328306
-        value: 0.97419107
+        time: 0.24162197
+        value: 0.9718336
         inSlope: 0.08018407
         outSlope: 0.08018407
         tangentMode: 0
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.26635244
+      - serializedVersion: 3
+        time: 0.5311632
+        value: 0.9403192
+        inSlope: -0.00843732
+        outSlope: -0.00843732
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.69427824
+        value: 0.9670475
+        inSlope: -0.0054372414
+        outSlope: -0.0054372414
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.874875
+        value: 0.9426489
+        inSlope: 0.056724593
+        outSlope: 0.056724593
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 1
       - serializedVersion: 3
         time: 1
         value: 1
@@ -888,9 +978,9 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    noiseXScale: 0.3
-    noiseZScale: 0.3
-    amplitudeScale: 1
+    noiseXScale: 1.5
+    noiseZScale: 1.5
+    amplitudeScale: 10
     noiseOctaves: 5
     octaveFrequencyScale: 0.5
     octaveAmplitudeScale: 2

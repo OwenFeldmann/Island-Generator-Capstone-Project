@@ -8,12 +8,9 @@ public class MeshGenerator : MonoBehaviour
 {
 	//Generated mesh and relevant variables
 	Mesh mesh;
-	Vector3[] vertices;
+	public Vector3[] vertices;
 	int[] triangles;
-	Color[] vertexColors;
-	
-	//Color gradient between seaLevel and the highest point
-	public Gradient gradient;
+	public Color[] vertexColors;
 	
 	[Header("World Shape")]
 	//Length of the mesh in the x direction.
@@ -28,8 +25,8 @@ public class MeshGenerator : MonoBehaviour
 	public float distanceFromCenterFalloffRate = 0.1f;
 	//Vertices above here are considered land.
 	public float seaLevel = 3f;
-	//Color used by underwater vertices.
-	public Color underWaterColor;
+	//Gradient color used by underwater vertices from 0 to seaLevel.
+	public Gradient underWaterGradient;
 	
 	[Header("Noise Settings")]
 	//Seeds the noise function. Uses a random seed when set to 0.
@@ -48,9 +45,6 @@ public class MeshGenerator : MonoBehaviour
 	public float octaveFrequencyScale = 0.5f;
 	public float octaveAmplitudeScale = 2f;
 	
-	//Heighest point on the generated terrain. Used for coloring.
-	private float maxTerrainHeight;
-	
 	[Header("Nav Mesh")]
 	public NavMeshSurface surface;
 	public GameObject player;
@@ -66,10 +60,12 @@ public class MeshGenerator : MonoBehaviour
 		SeedNoise(noiseSeed);
 		
 		CreateMesh();
+		MeshModifier meshModifier = new MeshModifier(vertices);
+		meshModifier.FlattenTerrainToLevel(seaLevel);//just need to know what parts of the island are above water
+		GetComponent<BiomeGenerator>().TESTGenerateBiomes();
+		//meshModifier.JiggleVertices();//jiggle to add roughness to terrain
 		UpdateMesh();
-		GetComponent<MeshCollider>().sharedMesh = mesh;
 		
-		surface.BuildNavMesh();//works fine without this line, but it suppresses a warning message
 		Instantiate(player, vertices[vertices.Length/2], Quaternion.identity);
 		surface.BuildNavMesh();
 		
@@ -122,13 +118,8 @@ public class MeshGenerator : MonoBehaviour
 		{
 			for(int x = 0; x <= xSize; x++)
 			{
-				//float y = Mathf.PerlinNoise(x * .3f, z * .3f) * 2f;
 				float y = HeightAt(x, z);
 				vertices[i] = new Vector3(x, y, z);
-				
-				if(y > maxTerrainHeight)
-					maxTerrainHeight = y;
-				
 				i++;
 			}
 		}
@@ -154,21 +145,21 @@ public class MeshGenerator : MonoBehaviour
 			vert++;
 		}
 		
-		//Define vertex colors
+		//Define vertex colors of underwater vertices
 		vertexColors = new Color[vertices.Length];
 		
 		for(int i = 0, z = 0; z <= zSize; z++)
 		{
 			for(int x = 0; x <= xSize; x++)
 			{
-				if(vertices[i].y >= seaLevel)
+				if(vertices[i].y < seaLevel)
 				{
-					float height = Mathf.InverseLerp(seaLevel, maxTerrainHeight, vertices[i].y);
-					vertexColors[i] = gradient.Evaluate(height);
+					float height = Mathf.InverseLerp(0, seaLevel, vertices[i].y);
+					vertexColors[i] = underWaterGradient.Evaluate(height);
 				}
 				else
 				{
-					vertexColors[i] = underWaterColor;
+					vertexColors[i] = Color.black;
 				}
 				i++;
 			}
@@ -188,6 +179,10 @@ public class MeshGenerator : MonoBehaviour
 		mesh.colors = vertexColors;
 		
 		mesh.RecalculateNormals();
+		
+		GetComponent<MeshCollider>().sharedMesh = mesh;
+		
+		surface.BuildNavMesh();
 	}
 	
 }

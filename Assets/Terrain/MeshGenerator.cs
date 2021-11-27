@@ -63,7 +63,8 @@ public class MeshGenerator : MonoBehaviour
 		MeshModifier meshModifier = new MeshModifier(vertices, vertexColors, biomes);
 		meshModifier.FlattenTerrainToLevel(seaLevel);//just need to know what parts of the island are above water
 		GetComponent<BiomeGenerator>().GenerateBiomes();
-		meshModifier.BlendBiomes(2, zSize);
+		meshModifier.BlendBiomes(2, zSize);//cleans up biome 
+		GetComponent<VolcanoGenerator>().BuildVolcano(vertices, vertexColors, seaLevel);
 		meshModifier.JiggleVertices(seaLevel);//jiggle to add roughness to terrain
 		UpdateMesh();
 		

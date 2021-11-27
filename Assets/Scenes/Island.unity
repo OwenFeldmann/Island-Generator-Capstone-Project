@@ -359,6 +359,7 @@ GameObject:
   - component: {fileID: 527093304}
   - component: {fileID: 527093300}
   - component: {fileID: 527093305}
+  - component: {fileID: 527093306}
   m_Layer: 0
   m_Name: IslandGenerator
   m_TagString: Untagged
@@ -380,6 +381,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   vertices: []
   vertexColors: []
+  biomes: []
   xSize: 256
   zSize: 256
   xCenter: 128
@@ -984,6 +986,30 @@ MonoBehaviour:
     noiseOctaves: 5
     octaveFrequencyScale: 0.5
     octaveAmplitudeScale: 2
+--- !u!114 &527093306
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 527093299}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22d9b8c2006cf4242851e001f39ffbf9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  centerX: 70
+  centerZ: 60
+  rimRadius: 10
+  lavaLevel: 8
+  iterations: 1500
+  iterationStrength: 0.15
+  iterationStartRadius: 5
+  iterationEndRadius: 1.5
+  startSpread: 4
+  endSpread: 0
+  stoneColor: {r: 0.39, g: 0.27, b: 0.248, a: 1}
+  lavaColor: {r: 0.735849, g: 0.39172295, b: 0.14231041, a: 1}
 --- !u!1 &678924143
 GameObject:
   m_ObjectHideFlags: 0

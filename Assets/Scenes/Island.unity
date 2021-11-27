@@ -900,8 +900,8 @@ MonoBehaviour:
       key6: {r: 0, g: 0, b: 0, a: 0}
       key7: {r: 0, g: 0, b: 0, a: 0}
       ctime0: 0
-      ctime1: 8096
-      ctime2: 15035
+      ctime1: 15227
+      ctime2: 25443
       ctime3: 65535
       ctime4: 0
       ctime5: 0
@@ -931,8 +931,8 @@ MonoBehaviour:
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
-        time: 0.24162197
-        value: 0.9718336
+        time: 0.34251308
+        value: 0.97016656
         inSlope: 0.08018407
         outSlope: 0.08018407
         tangentMode: 0
@@ -940,8 +940,8 @@ MonoBehaviour:
         inWeight: 0.33333334
         outWeight: 0.26635244
       - serializedVersion: 3
-        time: 0.5311632
-        value: 0.9403192
+        time: 0.5964403
+        value: 0.95528805
         inSlope: -0.00843732
         outSlope: -0.00843732
         tangentMode: 0

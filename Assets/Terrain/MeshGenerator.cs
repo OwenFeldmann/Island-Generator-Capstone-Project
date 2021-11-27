@@ -8,9 +8,11 @@ public class MeshGenerator : MonoBehaviour
 {
 	//Generated mesh and relevant variables
 	Mesh mesh;
-	public Vector3[] vertices;
+	[HideInInspector]public Vector3[] vertices;
 	int[] triangles;
-	public Color[] vertexColors;
+	[HideInInspector]public Color[] vertexColors;
+	//The coresponding biome to each vertex. Hidden for preformance reasons
+	[HideInInspector]public Biome[] biomes;
 	
 	[Header("World Shape")]
 	//Length of the mesh in the x direction.
@@ -58,9 +60,10 @@ public class MeshGenerator : MonoBehaviour
 		Noise.SeedNoise(noiseSeed);
 		
 		CreateMesh();
-		MeshModifier meshModifier = new MeshModifier(vertices);
+		MeshModifier meshModifier = new MeshModifier(vertices, vertexColors, biomes);
 		meshModifier.FlattenTerrainToLevel(seaLevel);//just need to know what parts of the island are above water
 		GetComponent<BiomeGenerator>().GenerateBiomes();
+		meshModifier.BlendBiomes(2, zSize);
 		meshModifier.JiggleVertices(seaLevel);//jiggle to add roughness to terrain
 		UpdateMesh();
 		
@@ -92,6 +95,7 @@ public class MeshGenerator : MonoBehaviour
 	{
 		//Define vertex positions
 		vertices = new Vector3[(xSize + 1) * (zSize + 1)];
+		biomes = new Biome[vertices.Length];
 		
 		for(int i = 0, z = 0; z <= zSize; z++)
 		{

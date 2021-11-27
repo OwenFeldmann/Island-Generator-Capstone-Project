@@ -18,7 +18,7 @@ public class BiomeGenerator : MonoBehaviour
     {
         MeshGenerator meshGenerator = GetComponent<MeshGenerator>();
 		GenerateBiomePoints(meshGenerator.xCenter, meshGenerator.zCenter);
-		GenerateBiomeTerrain(meshGenerator.vertices, meshGenerator.vertexColors, meshGenerator.seaLevel);
+		GenerateBiomeTerrain(meshGenerator.vertices, meshGenerator.vertexColors, meshGenerator.biomes, meshGenerator.seaLevel);
     }
 	
 	/*
@@ -40,23 +40,28 @@ public class BiomeGenerator : MonoBehaviour
 	/*
 	Generate terrain based on the relevant biome
 	*/
-	void GenerateBiomeTerrain(Vector3[] vertices, Color[] colors, float seaLevel)
+	void GenerateBiomeTerrain(Vector3[] vertices, Color[] colors, Biome[] biomes, float seaLevel)
 	{
 		for(int i = 0; i < vertices.Length; i++)
 		{
 			if(vertices[i].y >= seaLevel)
 			{
-				Biome biome = ClosestBiomePoint(vertices[i]).biome;
+				biomes[i] = ClosestBiomePoint(vertices[i]).biome;
 				
 				//Vertex height
-				float noiseValue = Noise.NoiseValue(vertices[i].x, vertices[i].z, biome.noiseXScale, biome.noiseZScale, biome.noiseOctaves, biome.octaveFrequencyScale, biome.octaveAmplitudeScale, true);
-				float y = biome.heightCurve.Evaluate(noiseValue) * biome.amplitudeScale;
+				float noiseValue = Noise.NoiseValue(vertices[i].x, vertices[i].z, biomes[i].noiseXScale, biomes[i].noiseZScale, biomes[i].noiseOctaves, biomes[i].octaveFrequencyScale, biomes[i].octaveAmplitudeScale, true);
+				float y = biomes[i].heightCurve.Evaluate(noiseValue) * biomes[i].amplitudeScale;
 				if(y < seaLevel)
 					y = seaLevel;
 				vertices[i].y = y;
 				
 				//Color biome
-				colors[i] = biome.gradient.Evaluate(noiseValue);
+				colors[i] = biomes[i].gradient.Evaluate(noiseValue);
+			}
+			else
+			{
+				//Sea doesn't have a biome
+				biomes[i] = null;
 			}
 		}
 		

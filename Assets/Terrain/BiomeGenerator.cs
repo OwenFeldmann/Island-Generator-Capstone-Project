@@ -70,7 +70,7 @@ public class BiomeGenerator : MonoBehaviour
 	/*
 	Returns the closest biome point to the provided location
 	*/
-	BiomePoint ClosestBiomePoint(Vector3 location)
+	public BiomePoint ClosestBiomePoint(Vector3 location)
 	{
 		BiomePoint closest = biomePoints[0];
 		float dist, closestDist = Vector3.Distance(location, biomePoints[0].location);

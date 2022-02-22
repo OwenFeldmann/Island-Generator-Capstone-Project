@@ -27,4 +27,7 @@ public class Biome
 	public float octaveFrequencyScale = 0.5f;
 	public float octaveAmplitudeScale = 2f;
 	
+	//props to be generated in the biome
+	public PropPlacementData[] props;
+	
 }

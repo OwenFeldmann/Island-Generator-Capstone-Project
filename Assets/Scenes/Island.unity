@@ -423,6 +423,8 @@ MonoBehaviour:
   noiseOctaves: 5
   octaveFrequencyScale: 0.5
   octaveAmplitudeScale: 2
+  propsToTryToPlace: 10000
+  propPrefab: {fileID: 2390797387660001342, guid: 6dc7bc57e6036b74b90ed57f5c389fa7, type: 3}
   surface: {fileID: 442627833}
   player: {fileID: 4033231023815958718, guid: 528f3b92a7ca8e84bb54ffb1ec53d3f1, type: 3}
 --- !u!23 &527093301
@@ -587,6 +589,18 @@ MonoBehaviour:
     noiseOctaves: 5
     octaveFrequencyScale: 0.5
     octaveAmplitudeScale: 2
+    props:
+    - propName: Plains Bush
+      mesh: {fileID: 5958362384829529401, guid: 576c59910860e2f46bdbcc36bed125dc, type: 3}
+      materials:
+      - {fileID: 6849546283596164469, guid: 576c59910860e2f46bdbcc36bed125dc, type: 3}
+      - {fileID: -8471623494174349654, guid: 576c59910860e2f46bdbcc36bed125dc, type: 3}
+      hasCollider: 0
+      colliderRadius: 0
+      colliderHeight: 0
+      noiseXScale: 0.3
+      noiseZScale: 0.3
+      tolerance: 0.6
   - name: Hills
     gradient:
       serializedVersion: 2
@@ -656,6 +670,18 @@ MonoBehaviour:
     noiseOctaves: 5
     octaveFrequencyScale: 0.5
     octaveAmplitudeScale: 2
+    props:
+    - propName: Hills Tree
+      mesh: {fileID: 2494185979427425891, guid: 576c59910860e2f46bdbcc36bed125dc, type: 3}
+      materials:
+      - {fileID: 6849546283596164469, guid: 576c59910860e2f46bdbcc36bed125dc, type: 3}
+      - {fileID: -8471623494174349654, guid: 576c59910860e2f46bdbcc36bed125dc, type: 3}
+      hasCollider: 1
+      colliderRadius: 0.5
+      colliderHeight: 4
+      noiseXScale: 0.3
+      noiseZScale: 0.3
+      tolerance: 0.7
   - name: Mountains
     gradient:
       serializedVersion: 2
@@ -734,6 +760,27 @@ MonoBehaviour:
     noiseOctaves: 5
     octaveFrequencyScale: 0.5
     octaveAmplitudeScale: 2
+    props:
+    - propName: Mountain Boulder1
+      mesh: {fileID: 5137950316506972610, guid: 576c59910860e2f46bdbcc36bed125dc, type: 3}
+      materials:
+      - {fileID: -5618006526032565814, guid: 576c59910860e2f46bdbcc36bed125dc, type: 3}
+      hasCollider: 0
+      colliderRadius: 0.3
+      colliderHeight: 0.3
+      noiseXScale: 0.3
+      noiseZScale: 0.3
+      tolerance: 0.4
+    - propName: Mountain Boulder2
+      mesh: {fileID: 5091583254017364308, guid: 576c59910860e2f46bdbcc36bed125dc, type: 3}
+      materials:
+      - {fileID: 8547320605542754435, guid: 576c59910860e2f46bdbcc36bed125dc, type: 3}
+      hasCollider: 0
+      colliderRadius: 0.3
+      colliderHeight: 0.3
+      noiseXScale: 0.3
+      noiseZScale: 0.3
+      tolerance: 0.4
   - name: Pointy Mountains
     gradient:
       serializedVersion: 2
@@ -821,6 +868,27 @@ MonoBehaviour:
     noiseOctaves: 5
     octaveFrequencyScale: 0.5
     octaveAmplitudeScale: 2
+    props:
+    - propName: Pointy Mountain Boulder1
+      mesh: {fileID: 5137950316506972610, guid: 576c59910860e2f46bdbcc36bed125dc, type: 3}
+      materials:
+      - {fileID: -5618006526032565814, guid: 576c59910860e2f46bdbcc36bed125dc, type: 3}
+      hasCollider: 0
+      colliderRadius: 0.3
+      colliderHeight: 0.3
+      noiseXScale: 0.3
+      noiseZScale: 0.3
+      tolerance: 0.4
+    - propName: Pointy Mountain Boulder2
+      mesh: {fileID: 5091583254017364308, guid: 576c59910860e2f46bdbcc36bed125dc, type: 3}
+      materials:
+      - {fileID: 8547320605542754435, guid: 576c59910860e2f46bdbcc36bed125dc, type: 3}
+      hasCollider: 0
+      colliderRadius: 0.3
+      colliderHeight: 0.3
+      noiseXScale: 0.3
+      noiseZScale: 0.3
+      tolerance: 0.4
   - name: Desert
     gradient:
       serializedVersion: 2
@@ -890,6 +958,29 @@ MonoBehaviour:
     noiseOctaves: 5
     octaveFrequencyScale: 0.5
     octaveAmplitudeScale: 2
+    props:
+    - propName: Desert Cactus
+      mesh: {fileID: -4562530893379237289, guid: 576c59910860e2f46bdbcc36bed125dc, type: 3}
+      materials:
+      - {fileID: 4467578371052316847, guid: 576c59910860e2f46bdbcc36bed125dc, type: 3}
+      - {fileID: -2075473337127952106, guid: 576c59910860e2f46bdbcc36bed125dc, type: 3}
+      hasCollider: 1
+      colliderRadius: 0.3
+      colliderHeight: 1.5
+      noiseXScale: 0.3
+      noiseZScale: 0.3
+      tolerance: 0.6
+    - propName: Desert Skull
+      mesh: {fileID: 5275773004055656219, guid: 576c59910860e2f46bdbcc36bed125dc, type: 3}
+      materials:
+      - {fileID: 3027191208319864836, guid: 576c59910860e2f46bdbcc36bed125dc, type: 3}
+      - {fileID: -5681512541482578658, guid: 576c59910860e2f46bdbcc36bed125dc, type: 3}
+      hasCollider: 0
+      colliderRadius: 0
+      colliderHeight: 0
+      noiseXScale: 0.3
+      noiseZScale: 0.3
+      tolerance: 0.8
   - name: Plateau
     gradient:
       serializedVersion: 2
@@ -986,6 +1077,31 @@ MonoBehaviour:
     noiseOctaves: 5
     octaveFrequencyScale: 0.5
     octaveAmplitudeScale: 2
+    props:
+    - propName: Plateau Small Mushroom
+      mesh: {fileID: -4747794041583772172, guid: 576c59910860e2f46bdbcc36bed125dc, type: 3}
+      materials:
+      - {fileID: -2659577995846843777, guid: 576c59910860e2f46bdbcc36bed125dc, type: 3}
+      - {fileID: 9045992240925318605, guid: 576c59910860e2f46bdbcc36bed125dc, type: 3}
+      - {fileID: -1295347660306081147, guid: 576c59910860e2f46bdbcc36bed125dc, type: 3}
+      hasCollider: 0
+      colliderRadius: 0
+      colliderHeight: 0
+      noiseXScale: 0.3
+      noiseZScale: 0.3
+      tolerance: 0.6
+    - propName: Plateau Big Mushroom
+      mesh: {fileID: -4994840003917950621, guid: 576c59910860e2f46bdbcc36bed125dc, type: 3}
+      materials:
+      - {fileID: -2659577995846843777, guid: 576c59910860e2f46bdbcc36bed125dc, type: 3}
+      - {fileID: 9045992240925318605, guid: 576c59910860e2f46bdbcc36bed125dc, type: 3}
+      - {fileID: -1295347660306081147, guid: 576c59910860e2f46bdbcc36bed125dc, type: 3}
+      hasCollider: 1
+      colliderRadius: 0.5
+      colliderHeight: 2
+      noiseXScale: 0.3
+      noiseZScale: 0.3
+      tolerance: 0.7
 --- !u!114 &527093306
 MonoBehaviour:
   m_ObjectHideFlags: 0

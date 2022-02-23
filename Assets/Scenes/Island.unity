@@ -677,7 +677,7 @@ MonoBehaviour:
       - {fileID: 6849546283596164469, guid: 576c59910860e2f46bdbcc36bed125dc, type: 3}
       - {fileID: -8471623494174349654, guid: 576c59910860e2f46bdbcc36bed125dc, type: 3}
       hasCollider: 1
-      colliderRadius: 0.5
+      colliderRadius: 0.3
       colliderHeight: 4
       noiseXScale: 0.3
       noiseZScale: 0.3
@@ -965,8 +965,8 @@ MonoBehaviour:
       - {fileID: 4467578371052316847, guid: 576c59910860e2f46bdbcc36bed125dc, type: 3}
       - {fileID: -2075473337127952106, guid: 576c59910860e2f46bdbcc36bed125dc, type: 3}
       hasCollider: 1
-      colliderRadius: 0.3
-      colliderHeight: 1.5
+      colliderRadius: 0.2
+      colliderHeight: 1
       noiseXScale: 0.3
       noiseZScale: 0.3
       tolerance: 0.6
@@ -1097,7 +1097,7 @@ MonoBehaviour:
       - {fileID: 9045992240925318605, guid: 576c59910860e2f46bdbcc36bed125dc, type: 3}
       - {fileID: -1295347660306081147, guid: 576c59910860e2f46bdbcc36bed125dc, type: 3}
       hasCollider: 1
-      colliderRadius: 0.5
+      colliderRadius: 0.2
       colliderHeight: 2
       noiseXScale: 0.3
       noiseZScale: 0.3

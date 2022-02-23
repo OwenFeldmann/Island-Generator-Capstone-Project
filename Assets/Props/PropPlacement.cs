@@ -8,6 +8,8 @@ public class PropPlacement
 	private BiomeGenerator biomeGen;
 	private GameObject propPrefab;
 	
+	private float minDistanceBetweenProps = 0.5f;
+	
 	public PropPlacement(MeshCollider islandCollider, BiomeGenerator biomeGenerator, GameObject propPrefab)
 	{
 		this.island = islandCollider;
@@ -20,8 +22,8 @@ public class PropPlacement
 		
 		for(int i = 0; i < propsToPlace; i++)
 		{
-			float x = Random.Range(0, xMax);
-			float z = Random.Range(0, zMax);
+			float x = Random.Range(0f, xMax);
+			float z = Random.Range(0f, zMax);
 			
 			Ray ray = new Ray(new Vector3(x, 100f, z), Vector3.down);
 			RaycastHit hit;
@@ -44,7 +46,7 @@ public class PropPlacement
 		//Check what props can actually be placed here
 		for(int i = 0; i < propPlacementData.Length; i++)
 		{
-			if(CanPlacePropAt(propPlacementData[i], location.x, location.z))
+			if(CanPlacePropAt(propPlacementData[i], location, propHolder))
 			{
 				validProps[nextValidPropIndex] = propPlacementData[i];
 				nextValidPropIndex++;
@@ -64,13 +66,21 @@ public class PropPlacement
 	/*
 	Checks if the noise value is within tolerance where the prop is placed.
 	Encourages similar props to be clustered on the noise hills.
+	
+	Prevents props from being placed too close to existing props
 	*/
-	private bool CanPlacePropAt(PropPlacementData ppd, float x, float z)
+	private bool CanPlacePropAt(PropPlacementData ppd, Vector3 loc, Transform propHolder)
 	{
+		foreach(Transform child in propHolder)
+		{
+			if(Vector3.Distance(loc, child.position) < minDistanceBetweenProps)
+				return false;
+		}
+		
 		//% 1000 to keep it in reasonable bounds.
 		//If coordinates are too big, PerlinNoise returns the same value every time.
 		int offset = ppd.propName.GetHashCode() % 1000;
-		return Mathf.PerlinNoise(offset + x * ppd.noiseXScale, offset + z * ppd.noiseZScale) >= ppd.tolerance;
+		return Mathf.PerlinNoise(offset + loc.x * ppd.noiseXScale, offset + loc.z * ppd.noiseZScale) >= ppd.tolerance;
 	}
 	
 }

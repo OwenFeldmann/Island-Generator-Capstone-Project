@@ -35,13 +35,13 @@ public class PropPlacement
 			if(island.Raycast(ray, out hit, 300f))
 			{
 				if(hit.point.y >= seaLevel)//no underwater props
-					PlaceProp(hit.point, propHolder);
+					PlaceProp(hit.point, hit.normal, propHolder);
 			}
 		}
 		
 	}
 	
-	private void PlaceProp(Vector3 location, Transform propHolder)
+	private void PlaceProp(Vector3 location, Vector3 normal, Transform propHolder)
 	{
 		Biome biome = biomeGen.ClosestBiomePoint(location).biome;
 		PropPlacementData[] propPlacementData = biome.props;
@@ -65,7 +65,34 @@ public class PropPlacement
 		//Place a random valid prop
 		PropPlacementData propData = validProps[Random.Range(0, nextValidPropIndex)];
 		GameObject prop = GameObject.Instantiate(propPrefab, location, Quaternion.identity, propHolder);
-		prop.GetComponent<Prop>().Setup(propData);
+		SetupProp(prop, propData, normal);
+	}
+	
+	private void SetupProp(GameObject prop, PropPlacementData ppd, Vector3 normal)
+	{
+		prop.name = ppd.propName;
+		
+		prop.GetComponentInChildren<MeshFilter>().mesh = ppd.mesh;
+		prop.GetComponentInChildren<MeshRenderer>().materials = ppd.materials;
+		
+		CapsuleCollider collider = prop.GetComponent<CapsuleCollider>();
+		if(ppd.hasCollider)
+		{
+			collider.enabled = true;
+			collider.radius = ppd.colliderRadius;
+			collider.height = ppd.colliderHeight;
+			collider.center = new Vector3(0, ppd.colliderHeight/2, 0);
+		}
+		else
+			collider.enabled = false;
+		
+		Transform pt = prop.transform;
+		//Set prop to be perpendicular to ground, with an upwards bias
+		pt.LookAt(pt.position + normal + Vector3.up*2);
+		//Set random rotation
+		pt.eulerAngles = new Vector3(pt.eulerAngles.x, pt.eulerAngles.y, Random.Range(0, 360));
+		//Adjust size slightly
+		pt.localScale *= Random.Range(0.8f, 1.2f);
 	}
 	
 	/*

@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-public class PropPlacementData
+[CreateAssetMenu()]
+public class PropPlacementData : ScriptableObject
 {
 	public string propName;
 	//The prop's mesh

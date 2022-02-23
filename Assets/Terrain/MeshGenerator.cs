@@ -46,6 +46,7 @@ public class MeshGenerator : MonoBehaviour
 	public float octaveAmplitudeScale = 2f;
 	
 	[Header("Props")]
+	public bool generateProps = true;
 	public int propsToTryToPlace = 1000;
 	public GameObject propPrefab;
 	
@@ -74,8 +75,12 @@ public class MeshGenerator : MonoBehaviour
 		UpdateMesh();
 		
 		//Place props
-		PropPlacement propPlacer = new PropPlacement(GetComponent<MeshCollider>(), GetComponent<BiomeGenerator>(), propPrefab);
-		propPlacer.PlaceProps(transform, propsToTryToPlace, xSize, zSize, seaLevel);
+		if(generateProps)
+		{
+			PropPlacement propPlacer = new PropPlacement(GetComponent<MeshCollider>(), GetComponent<BiomeGenerator>(), 
+				GetComponent<VolcanoGenerator>(), propPrefab);
+			propPlacer.PlaceProps(transform, propsToTryToPlace, xSize, zSize, seaLevel);
+		}
 		
 		Instantiate(player, vertices[vertices.Length/2], Quaternion.identity);
 		surface.BuildNavMesh();

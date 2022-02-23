@@ -6,15 +6,19 @@ public class PropPlacement
 {
 	private MeshCollider island;
 	private BiomeGenerator biomeGen;
+	private VolcanoGenerator vg;
 	private GameObject propPrefab;
 	
 	private float minDistanceBetweenProps = 0.5f;
+	private float maxVolcanoRadius;
 	
-	public PropPlacement(MeshCollider islandCollider, BiomeGenerator biomeGenerator, GameObject propPrefab)
+	public PropPlacement(MeshCollider islandCollider, BiomeGenerator biomeGen, VolcanoGenerator vg, GameObject propPrefab)
 	{
 		this.island = islandCollider;
-		this.biomeGen = biomeGenerator;
+		this.biomeGen = biomeGen;
+		this.vg = vg;
 		this.propPrefab = propPrefab;
+		maxVolcanoRadius = vg.rimRadius + vg.startSpread + vg.iterationStartRadius;
 	}
 	
 	public void PlaceProps(Transform propHolder, int propsToPlace, int xMax, int zMax, float seaLevel)
@@ -39,14 +43,15 @@ public class PropPlacement
 	
 	private void PlaceProp(Vector3 location, Transform propHolder)
 	{
-		PropPlacementData[] propPlacementData = biomeGen.ClosestBiomePoint(location).biome.props;
+		Biome biome = biomeGen.ClosestBiomePoint(location).biome;
+		PropPlacementData[] propPlacementData = biome.props;
 		PropPlacementData[] validProps = new PropPlacementData[propPlacementData.Length];
 		int nextValidPropIndex = 0;
 		
 		//Check what props can actually be placed here
 		for(int i = 0; i < propPlacementData.Length; i++)
 		{
-			if(CanPlacePropAt(propPlacementData[i], location, propHolder))
+			if(CanPlacePropAt(propPlacementData[i], location, biome, propHolder))
 			{
 				validProps[nextValidPropIndex] = propPlacementData[i];
 				nextValidPropIndex++;
@@ -64,13 +69,24 @@ public class PropPlacement
 	}
 	
 	/*
+	No props placed on the volcano.
+	
+	No props placed on spiky mountain spikes.
+	
+	Prevents props from being placed too close to existing props.
+	
 	Checks if the noise value is within tolerance where the prop is placed.
 	Encourages similar props to be clustered on the noise hills.
-	
-	Prevents props from being placed too close to existing props
 	*/
-	private bool CanPlacePropAt(PropPlacementData ppd, Vector3 loc, Transform propHolder)
+	private bool CanPlacePropAt(PropPlacementData ppd, Vector3 loc, Biome biome, Transform propHolder)
 	{
+		if(vg.generateVolcano && Mathf.Sqrt(Mathf.Pow(loc.x - vg.centerX, 2) + Mathf.Pow(loc.z - vg.centerZ, 2))
+				<= maxVolcanoRadius)
+			return false;
+		
+		if(biome.name == "Pointy Mountains" && loc.y >= 6.5f)
+			return false;
+		
 		foreach(Transform child in propHolder)
 		{
 			if(Vector3.Distance(loc, child.position) < minDistanceBetweenProps)

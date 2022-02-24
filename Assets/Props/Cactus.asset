@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b160e90230e35e48b1ce05235c9f4e0, type: 3}
+  m_Name: Cactus
+  m_EditorClassIdentifier: 
+  propName: Cactus
+  mesh: {fileID: -4562530893379237289, guid: 576c59910860e2f46bdbcc36bed125dc, type: 3}
+  materials:
+  - {fileID: 4467578371052316847, guid: 576c59910860e2f46bdbcc36bed125dc, type: 3}
+  - {fileID: -2075473337127952106, guid: 576c59910860e2f46bdbcc36bed125dc, type: 3}
+  hasCollider: 1
+  colliderRadius: 0.2
+  colliderHeight: 1
+  noiseXScale: 0.3
+  noiseZScale: 0.3
+  tolerance: 0.6

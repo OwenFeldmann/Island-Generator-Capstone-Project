@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class VolcanoGenerator : MonoBehaviour
 {
+	public bool generateVolcano = true;
+	
     //Center and radius on the volcano rim
 	public float centerX = 80f;
 	public float centerZ = 80f;
@@ -31,6 +33,9 @@ public class VolcanoGenerator : MonoBehaviour
 	
 	public void BuildVolcano(Vector3[] vertices, Color[] colors, float seaLevel)
 	{
+		if(!generateVolcano)
+			return;
+		
 		Circle rim = new Circle(centerX, centerZ, rimRadius);
 		currentSpread = startSpread;
 		iterationCurrentRadius = iterationStartRadius;

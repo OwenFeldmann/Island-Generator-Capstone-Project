@@ -45,6 +45,11 @@ public class MeshGenerator : MonoBehaviour
 	public float octaveFrequencyScale = 0.5f;
 	public float octaveAmplitudeScale = 2f;
 	
+	[Header("Props")]
+	public bool generateProps = true;
+	public int propsToTryToPlace = 1000;
+	public GameObject propPrefab;
+	
 	[Header("Nav Mesh")]
 	public NavMeshSurface surface;
 	public GameObject player;
@@ -61,12 +66,21 @@ public class MeshGenerator : MonoBehaviour
 		
 		CreateMesh();
 		MeshModifier meshModifier = new MeshModifier(vertices, vertexColors, biomes);
+		
 		meshModifier.FlattenTerrainToLevel(seaLevel);//just need to know what parts of the island are above water
 		GetComponent<BiomeGenerator>().GenerateBiomes();
 		meshModifier.BlendBiomes(2, zSize);//cleans up biome 
 		GetComponent<VolcanoGenerator>().BuildVolcano(vertices, vertexColors, seaLevel);
 		meshModifier.JiggleVertices(seaLevel);//jiggle to add roughness to terrain
 		UpdateMesh();
+		
+		//Place props
+		if(generateProps)
+		{
+			PropPlacement propPlacer = new PropPlacement(GetComponent<MeshCollider>(), GetComponent<BiomeGenerator>(), 
+				GetComponent<VolcanoGenerator>(), propPrefab);
+			propPlacer.PlaceProps(transform, propsToTryToPlace, xSize, zSize, seaLevel);
+		}
 		
 		Instantiate(player, vertices[vertices.Length/2], Quaternion.identity);
 		surface.BuildNavMesh();

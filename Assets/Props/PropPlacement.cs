@@ -43,7 +43,7 @@ public class PropPlacement
 	
 	private void PlaceProp(Vector3 location, Vector3 normal, Transform propHolder)
 	{
-		Biome biome = biomeGen.ClosestBiomePoint(location).biome;
+		Biome biome = biomeGen.ClosestBiome(location);
 		PropPlacementData[] propPlacementData = biome.props;
 		PropPlacementData[] validProps = new PropPlacementData[propPlacementData.Length];
 		int nextValidPropIndex = 0;

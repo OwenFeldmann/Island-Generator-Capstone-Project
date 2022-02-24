@@ -14,6 +14,8 @@ public class MeshGenerator : MonoBehaviour
 	//The coresponding biome to each vertex. Hidden for preformance reasons
 	[HideInInspector]public Biome[] biomes;
 	
+	public bool animateGeneration = true;
+	
 	[Header("World Shape")]
 	//Length of the mesh in the x direction.
 	public int xSize = 256;
@@ -29,6 +31,8 @@ public class MeshGenerator : MonoBehaviour
 	public float seaLevel = 3f;
 	//Gradient color used by underwater vertices from 0 to seaLevel.
 	public Gradient underWaterGradient;
+	//Gradient used on island before biomes are applied
+	public Gradient landGradient;
 	
 	[Header("Noise Settings")]
 	//Seeds the noise function. Uses a random seed when set to 0.
@@ -54,12 +58,20 @@ public class MeshGenerator : MonoBehaviour
 	public NavMeshSurface surface;
 	public GameObject player;
 	
+	private Coroutine generateIslandCorountine;
+	private float maxHeight = 0f;
+	
 	/*
 	Script starting location. Creates and displays generated terrain mesh.
 	*/
     void Start()
     {
-        mesh = new Mesh();
+        generateIslandCorountine = StartCoroutine(GenerateIsland());
+    }
+	
+	IEnumerator GenerateIsland()
+	{
+		mesh = new Mesh();
 		GetComponent<MeshFilter>().mesh = mesh;
 		
 		Noise.SeedNoise(noiseSeed);
@@ -67,12 +79,60 @@ public class MeshGenerator : MonoBehaviour
 		CreateMesh();
 		MeshModifier meshModifier = new MeshModifier(vertices, vertexColors, biomes);
 		
-		meshModifier.FlattenTerrainToLevel(seaLevel);//just need to know what parts of the island are above water
-		GetComponent<BiomeGenerator>().GenerateBiomes();
-		meshModifier.BlendBiomes(2, zSize);//cleans up biome 
-		GetComponent<VolcanoGenerator>().BuildVolcano(vertices, vertexColors, seaLevel);
+		if(animateGeneration)
+		{//wait after island shaped
+			UpdateMesh();
+			yield return new WaitForSeconds(1f);
+		}
+		
+		BiomeGenerator bg = GetComponent<BiomeGenerator>();
+		if(bg.generateBiomes)
+		{
+			
+			meshModifier.FlattenTerrainToLevel(seaLevel);//just need to know what parts of the island are above water
+			
+			if(animateGeneration)
+			{//wait after flatten
+				UpdateMesh();
+				yield return new WaitForSeconds(1f);
+			}
+			
+			yield return StartCoroutine(bg.GenerateBiomes());
+			
+			if(animateGeneration)
+			{//wait after biomes generated
+				UpdateMesh();
+				yield return new WaitForSeconds(1f);
+			}
+			
+			meshModifier.BlendBiomes(2, zSize);//cleans up biome 
+			
+			if(animateGeneration)
+			{//wait after biomes blended
+				UpdateMesh();
+				yield return new WaitForSeconds(1f);
+			}
+		}
+		
+		VolcanoGenerator vg  = GetComponent<VolcanoGenerator>();
+		if(vg.generateVolcano)
+		{
+			yield return StartCoroutine(vg.BuildVolcano(vertices, vertexColors, seaLevel));
+			
+			if(animateGeneration)
+			{//wait after volcano generated
+				UpdateMesh();
+				yield return new WaitForSeconds(1f);
+			}
+		}
+		
 		meshModifier.JiggleVertices(seaLevel);//jiggle to add roughness to terrain
 		UpdateMesh();
+		
+		if(animateGeneration)
+		{//wait after vertices jiggled
+			yield return new WaitForSeconds(1f);
+		}
 		
 		//Place props
 		if(generateProps)
@@ -80,12 +140,20 @@ public class MeshGenerator : MonoBehaviour
 			PropPlacement propPlacer = new PropPlacement(GetComponent<MeshCollider>(), GetComponent<BiomeGenerator>(), 
 				GetComponent<VolcanoGenerator>(), propPrefab);
 			propPlacer.PlaceProps(transform, propsToTryToPlace, xSize, zSize, seaLevel);
+		
+			if(animateGeneration)
+			{//wait after props generated
+				UpdateMesh();
+				yield return new WaitForSeconds(1f);
+			}
 		}
+		
+		if(animateGeneration)//pause at end of generation
+			yield return new WaitForSeconds(3f);
 		
 		Instantiate(player, vertices[vertices.Length/2], Quaternion.identity);
 		surface.BuildNavMesh();
-		
-    }
+	}
 	
 	/*
 	Returns a height value at the specified location, using the noise parameters specified in the editor.
@@ -117,6 +185,9 @@ public class MeshGenerator : MonoBehaviour
 			for(int x = 0; x <= xSize; x++)
 			{
 				float y = HeightAt(x, z);
+				if(y > maxHeight)
+					maxHeight = y;
+				
 				vertices[i] = new Vector3(x, y, z);
 				i++;
 			}
@@ -157,7 +228,8 @@ public class MeshGenerator : MonoBehaviour
 				}
 				else
 				{
-					vertexColors[i] = Color.black;
+					float height = Mathf.InverseLerp(seaLevel, maxHeight, vertices[i].y);
+					vertexColors[i] = landGradient.Evaluate(height);
 				}
 				i++;
 			}
@@ -168,7 +240,7 @@ public class MeshGenerator : MonoBehaviour
 	/*
 	Must executed once changes to the mesh are done.
 	*/
-	void UpdateMesh()
+	public void UpdateMesh()
 	{
 		mesh.Clear();
 		

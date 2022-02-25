@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BiomeGenerator : MonoBehaviour
 {
+	public bool generateBiomes = true;
 	
 	//How many biomes should be generated
 	public int biomesToPlace = 10;
@@ -13,12 +14,17 @@ public class BiomeGenerator : MonoBehaviour
 	public BiomePoint[] biomePoints;
 	//An array of biomes to be defined in the editor
 	public Biome[] biomes;
+	//Biome for when no biomes are generated
+	public Biome nullBiome;
 	
-    public void GenerateBiomes()
+    public IEnumerator GenerateBiomes()
     {
+		if(!generateBiomes)
+			yield break;
+		
         MeshGenerator meshGenerator = GetComponent<MeshGenerator>();
 		GenerateBiomePoints(meshGenerator.xCenter, meshGenerator.zCenter);
-		GenerateBiomeTerrain(meshGenerator.vertices, meshGenerator.vertexColors, meshGenerator.biomes, meshGenerator.seaLevel);
+		yield return StartCoroutine(GenerateBiomeTerrain(meshGenerator.vertices, meshGenerator.vertexColors, meshGenerator.biomes, meshGenerator.seaLevel));
     }
 	
 	/*
@@ -40,14 +46,36 @@ public class BiomeGenerator : MonoBehaviour
 	/*
 	Generate terrain based on the relevant biome
 	*/
-	void GenerateBiomeTerrain(Vector3[] vertices, Color[] colors, Biome[] biomes, float seaLevel)
+	private IEnumerator GenerateBiomeTerrain(Vector3[] vertices, Color[] colors, Biome[] biomes, float seaLevel)
 	{
+		//setup biomes array and color map with Voronoi noise
 		for(int i = 0; i < vertices.Length; i++)
 		{
 			if(vertices[i].y >= seaLevel)
 			{
-				biomes[i] = ClosestBiomePoint(vertices[i]).biome;
+				biomes[i] = ClosestBiome(vertices[i]);
 				
+				colors[i] = biomes[i].gradient.Evaluate(.3f);
+			}
+			else
+			{
+				//Sea doesn't have a biome
+				biomes[i] = null;
+			}
+		}
+		
+		MeshGenerator mg = GetComponent<MeshGenerator>();
+		if(mg.animateGeneration)
+		{//wait after Voronoi Noise drawn
+			mg.UpdateMesh();
+			yield return new WaitForSeconds(1f);
+		}
+		
+		//Generate actual biome heights and colors
+		for(int i = 0; i < vertices.Length; i++)
+		{
+			if(biomes[i] != null)
+			{
 				//Vertex height
 				float noiseValue = Noise.NoiseValue(vertices[i].x, vertices[i].z, biomes[i].noiseXScale, biomes[i].noiseZScale, biomes[i].noiseOctaves, biomes[i].octaveFrequencyScale, biomes[i].octaveAmplitudeScale, true);
 				float y = biomes[i].heightCurve.Evaluate(noiseValue) * biomes[i].amplitudeScale;
@@ -58,20 +86,20 @@ public class BiomeGenerator : MonoBehaviour
 				//Color biome
 				colors[i] = biomes[i].gradient.Evaluate(noiseValue);
 			}
-			else
-			{
-				//Sea doesn't have a biome
-				biomes[i] = null;
-			}
 		}
 		
 	}
 	
 	/*
-	Returns the closest biome point to the provided location
+	Returns the closest biome to the provided location.
+	
+	Returns the nullBiome if no biomes are generated
 	*/
-	public BiomePoint ClosestBiomePoint(Vector3 location)
+	public Biome ClosestBiome(Vector3 location)
 	{
+		if(!generateBiomes)
+			return nullBiome;
+		
 		BiomePoint closest = biomePoints[0];
 		float dist, closestDist = Vector3.Distance(location, biomePoints[0].location);
 		
@@ -85,7 +113,7 @@ public class BiomeGenerator : MonoBehaviour
 			}
 		}
 		
-		return closest;
+		return closest.biome;
 	}
 	
 	/*

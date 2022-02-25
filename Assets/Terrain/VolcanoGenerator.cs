@@ -31,10 +31,12 @@ public class VolcanoGenerator : MonoBehaviour
 	public Color stoneColor;
 	public Color lavaColor;
 	
-	public void BuildVolcano(Vector3[] vertices, Color[] colors, float seaLevel)
+	public IEnumerator BuildVolcano(Vector3[] vertices, Color[] colors, float seaLevel)
 	{
 		if(!generateVolcano)
-			return;
+			yield break;
+		
+		MeshGenerator mg = GetComponent<MeshGenerator>();
 		
 		Circle rim = new Circle(centerX, centerZ, rimRadius);
 		currentSpread = startSpread;
@@ -61,6 +63,12 @@ public class VolcanoGenerator : MonoBehaviour
 			
 			currentSpread -= (startSpread - endSpread) / iterations;
 			iterationCurrentRadius -= (iterationStartRadius - iterationEndRadius) / iterations;
+			
+			if(mg.animateGeneration && i % 100 == 0)
+			{//wait after several iterations
+				mg.UpdateMesh();
+				yield return new WaitForSeconds(0.1f);
+			}
 		}
 		
 		for(int p = 0; p < vertices.Length; p++)

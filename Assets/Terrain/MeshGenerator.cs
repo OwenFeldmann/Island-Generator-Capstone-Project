@@ -33,6 +33,8 @@ public class MeshGenerator : MonoBehaviour
 	public Gradient underWaterGradient;
 	//Gradient used on island before biomes are applied
 	public Gradient landGradient;
+	//Decorative water plane
+	public GameObject waterPlane;
 	
 	[Header("Noise Settings")]
 	//Seeds the noise function. Uses a random seed when set to 0.
@@ -71,6 +73,10 @@ public class MeshGenerator : MonoBehaviour
 	
 	IEnumerator GenerateIsland()
 	{
+		//setup water plane
+		//seaLevel-1 so that waves don't come on land
+		waterPlane.transform.position = new Vector3(xCenter, seaLevel-1, zCenter);
+		
 		mesh = new Mesh();
 		GetComponent<MeshFilter>().mesh = mesh;
 		

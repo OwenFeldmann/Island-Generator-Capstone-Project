@@ -1128,10 +1128,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   generateVolcano: 1
+  chooseRandomCenter: 1
   centerX: 70
   centerZ: 60
   rimRadius: 10
-  lavaLevel: 8
+  lavaLevel: 10
   iterations: 1500
   iterationStrength: 0.15
   iterationStartRadius: 5

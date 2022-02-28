@@ -123,7 +123,7 @@ public class MeshGenerator : MonoBehaviour
 		VolcanoGenerator vg  = GetComponent<VolcanoGenerator>();
 		if(vg.generateVolcano)
 		{
-			yield return StartCoroutine(vg.BuildVolcano(vertices, vertexColors, seaLevel));
+			yield return StartCoroutine(vg.BuildVolcano());
 			
 			if(animateGeneration)
 			{//wait after volcano generated

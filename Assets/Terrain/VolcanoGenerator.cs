@@ -6,6 +6,7 @@ public class VolcanoGenerator : MonoBehaviour
 {
 	public bool generateVolcano = true;
 	
+	public bool chooseRandomCenter = true;
     //Center and radius on the volcano rim
 	public float centerX = 80f;
 	public float centerZ = 80f;
@@ -31,17 +32,44 @@ public class VolcanoGenerator : MonoBehaviour
 	public Color stoneColor;
 	public Color lavaColor;
 	
-	public IEnumerator BuildVolcano(Vector3[] vertices, Color[] colors, float seaLevel)
+	public IEnumerator BuildVolcano()
 	{
 		if(!generateVolcano)
 			yield break;
 		
 		MeshGenerator mg = GetComponent<MeshGenerator>();
 		
+		if(chooseRandomCenter)
+		{
+			centerX = Random.Range(MaxVolcanoRadius(), mg.xSize-MaxVolcanoRadius());
+			centerZ = Random.Range(MaxVolcanoRadius(), mg.zSize-MaxVolcanoRadius());
+		}
+		
+		Circle volcanoMaxCircle = new Circle(centerX, centerZ, MaxVolcanoRadius());
+		int[] volcanoVertices = new int[mg.vertices.Length];
+		int nextVolcanoVertexIndex = 0;
+		
+		/*
+		Figure out which vertices are affected by the volcano and 
+		flatten the ground to prevent brown spiky mountains to raise up
+		*/
+		for(int i = 0; i < mg.vertices.Length; i++)
+		{
+			if(volcanoMaxCircle.ContainsPoint(mg.vertices[i]))
+			{
+				volcanoVertices[nextVolcanoVertexIndex] = i;
+				nextVolcanoVertexIndex++;
+				//averages height down towards sealevel
+				mg.vertices[i].y = (mg.vertices[i].y + 2*mg.seaLevel)/3;
+				mg.vertexColors[i] = stoneColor;
+			}
+		}
+		
 		Circle rim = new Circle(centerX, centerZ, rimRadius);
 		currentSpread = startSpread;
 		iterationCurrentRadius = iterationStartRadius;
 		
+		//Build the volcano
 		for(int i = 0; i < iterations; i++)
 		{
 			//find a point on the volcano rim
@@ -51,13 +79,11 @@ public class VolcanoGenerator : MonoBehaviour
 			
 			Circle iterationCircle = new Circle(iterationCenter, iterationCurrentRadius);
 			
-			for(int p = 0; p < vertices.Length; p++)
+			for(int p = 0; p < nextVolcanoVertexIndex; p++)
 			{
-				if(iterationCircle.ContainsPoint(vertices[p]))
+				if(iterationCircle.ContainsPoint(mg.vertices[volcanoVertices[p]]))
 				{
-					vertices[p].y += iterationStrength;
-					if(vertices[p].y >= seaLevel)
-						colors[p] = stoneColor;
+					mg.vertices[volcanoVertices[p]].y += iterationStrength;
 				}
 			}
 			
@@ -67,16 +93,22 @@ public class VolcanoGenerator : MonoBehaviour
 			if(mg.animateGeneration && i % 100 == 0)
 			{//wait after several iterations
 				mg.UpdateMesh();
-				yield return new WaitForSeconds(0.1f);
+				yield return new WaitForSeconds(0.05f);
 			}
 		}
 		
-		for(int p = 0; p < vertices.Length; p++)
+		//Color the center a lava color
+		for(int p = 0; p < nextVolcanoVertexIndex; p++)
 		{
-			if(rim.ContainsPoint(vertices[p]) && vertices[p].y < lavaLevel)
-				colors[p] = lavaColor;
+			if(rim.ContainsPoint(mg.vertices[volcanoVertices[p]]) && mg.vertices[volcanoVertices[p]].y < lavaLevel)
+				mg.vertexColors[p] = lavaColor;
 		}
 		
+	}
+	
+	public float MaxVolcanoRadius()
+	{
+		return rimRadius + startSpread + iterationStartRadius;
 	}
 	
 	/*

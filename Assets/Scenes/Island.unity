@@ -383,6 +383,9 @@ MonoBehaviour:
   vertexColors: []
   biomes: []
   animateGeneration: 1
+  jiggleVertices: 1
+  terraceVertices: 0
+  terraceHeight: 1
   xSize: 256
   zSize: 256
   xCenter: 128

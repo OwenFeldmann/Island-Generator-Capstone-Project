@@ -54,6 +54,17 @@ public class MeshModifier
 	}
 	
 	/*
+	Turns the terrain into terraces of specified height, rather than smooth slopes
+	*/
+	public void TerraceTerrain(float terraceHeight)
+	{
+		for(int i = 0; i < vertices.Length; i++)
+		{
+			vertices[i].y = terraceHeight * Mathf.Floor(vertices[i].y / terraceHeight);
+		}
+	}
+	
+	/*
 	Averages every point with the surrounding points based on the given square radius.
 	Assumes there are no land points within the given radius of the edge of the map.
 	*/

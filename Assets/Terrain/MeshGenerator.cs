@@ -15,6 +15,9 @@ public class MeshGenerator : MonoBehaviour
 	[HideInInspector]public Biome[] biomes;
 	
 	public bool animateGeneration = true;
+	public bool jiggleVertices = true;
+	public bool terraceVertices = false;
+	public float terraceHeight = 1f;
 	
 	[Header("World Shape")]
 	//Length of the mesh in the x direction.
@@ -132,11 +135,19 @@ public class MeshGenerator : MonoBehaviour
 			}
 		}
 		
-		meshModifier.JiggleVertices(seaLevel);//jiggle to add roughness to terrain
+		if(jiggleVertices)
+		{
+			meshModifier.JiggleVertices(seaLevel);//jiggle to add roughness to terrain
+			UpdateMesh();
+			yield return new WaitForSeconds(1f);
+		}
+		
+		if(terraceVertices)
+			meshModifier.TerraceTerrain(terraceHeight);
 		UpdateMesh();
 		
 		if(animateGeneration)
-		{//wait after vertices jiggled
+		{//wait after vertices terraced
 			yield return new WaitForSeconds(1f);
 		}
 		

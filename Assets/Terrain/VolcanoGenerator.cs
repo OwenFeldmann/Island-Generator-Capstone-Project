@@ -32,6 +32,8 @@ public class VolcanoGenerator : MonoBehaviour
 	public Color stoneColor;
 	public Color lavaColor;
 	
+	public GameObject volcanoSmoke;
+	
 	public IEnumerator BuildVolcano()
 	{
 		if(!generateVolcano)
@@ -101,8 +103,11 @@ public class VolcanoGenerator : MonoBehaviour
 		for(int p = 0; p < nextVolcanoVertexIndex; p++)
 		{
 			if(rim.ContainsPoint(mg.vertices[volcanoVertices[p]]) && mg.vertices[volcanoVertices[p]].y < lavaLevel)
-				mg.vertexColors[p] = lavaColor;
+				mg.vertexColors[volcanoVertices[p]] = lavaColor;
 		}
+		
+		//Create volcano smoke
+		GameObject.Instantiate(volcanoSmoke, new Vector3(centerX, lavaLevel, centerZ), Quaternion.identity);
 		
 	}
 	

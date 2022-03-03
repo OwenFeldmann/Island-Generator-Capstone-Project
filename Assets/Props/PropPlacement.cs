@@ -18,7 +18,7 @@ public class PropPlacement
 		this.biomeGen = biomeGen;
 		this.vg = vg;
 		this.propPrefab = propPrefab;
-		maxVolcanoRadius = vg.rimRadius + vg.startSpread + vg.iterationStartRadius;
+		maxVolcanoRadius = vg.MaxVolcanoRadius();
 	}
 	
 	public void PlaceProps(Transform propHolder, int propsToPlace, int xMax, int zMax, float seaLevel)

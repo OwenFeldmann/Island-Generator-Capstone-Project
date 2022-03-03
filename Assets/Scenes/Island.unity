@@ -236,7 +236,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 1
-  m_FollowOffset: {x: 0, y: 4, z: -8}
+  m_FollowOffset: {x: 0, y: 2, z: -8}
   m_XDamping: 1
   m_YDamping: 1
   m_ZDamping: 1
@@ -383,6 +383,9 @@ MonoBehaviour:
   vertexColors: []
   biomes: []
   animateGeneration: 1
+  jiggleVertices: 1
+  terraceVertices: 0
+  terraceHeight: 1
   xSize: 256
   zSize: 256
   xCenter: 128
@@ -1128,10 +1131,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   generateVolcano: 1
+  chooseRandomCenter: 1
   centerX: 70
   centerZ: 60
   rimRadius: 10
-  lavaLevel: 8
+  lavaLevel: 10
   iterations: 1500
   iterationStrength: 0.15
   iterationStartRadius: 5
@@ -1140,6 +1144,7 @@ MonoBehaviour:
   endSpread: 0
   stoneColor: {r: 0.39, g: 0.27, b: 0.248, a: 1}
   lavaColor: {r: 0.735849, g: 0.39172295, b: 0.14231041, a: 1}
+  volcanoSmoke: {fileID: 7300783756026450239, guid: 82b1d9e7a8f7f484bac62b4615eac693, type: 3}
 --- !u!1 &678924143
 GameObject:
   m_ObjectHideFlags: 0

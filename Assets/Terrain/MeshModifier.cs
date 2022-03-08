@@ -54,9 +54,9 @@ public class MeshModifier
 	}
 	
 	/*
-	Turns the terrain into terraces of specified height, rather than smooth slopes
+	Turns the terrain into smooth terraces of specified height, rather than smooth slopes
 	*/
-	public void TerraceTerrain(float terraceHeight)
+	public void SmoothTerraceTerrain(float terraceHeight)
 	{
 		for(int i = 0; i < vertices.Length; i++)
 		{

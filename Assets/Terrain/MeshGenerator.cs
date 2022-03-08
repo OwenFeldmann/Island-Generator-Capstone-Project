@@ -16,7 +16,7 @@ public class MeshGenerator : MonoBehaviour
 	
 	public bool animateGeneration = true;
 	public bool jiggleVertices = true;
-	public bool terraceVertices = false;
+	public bool SmoothTerraceVertices = false;
 	public float terraceHeight = 1f;
 	
 	[Header("World Shape")]
@@ -76,6 +76,10 @@ public class MeshGenerator : MonoBehaviour
 	
 	IEnumerator GenerateIsland()
 	{
+		IslandUI islandUI = GameObject.Find("UI").GetComponent<IslandUI>();
+		islandUI.SetGenerationPanelActive(animateGeneration);//show readout for generation process if animating
+		islandUI.SetGenerationText("Starting Generation Process");
+		
 		//setup water plane
 		//seaLevel-1 so that waves don't come on land
 		waterPlane.transform.position = new Vector3(xCenter, seaLevel-1, zCenter);
@@ -85,6 +89,7 @@ public class MeshGenerator : MonoBehaviour
 		
 		Noise.SeedNoise(noiseSeed);
 		
+		islandUI.SetGenerationText("Generating Mesh with Heightmap");
 		CreateMesh();
 		MeshModifier meshModifier = new MeshModifier(vertices, vertexColors, biomes);
 		
@@ -98,6 +103,7 @@ public class MeshGenerator : MonoBehaviour
 		if(bg.generateBiomes)
 		{
 			
+			islandUI.SetGenerationText("Flattening Island");
 			meshModifier.FlattenTerrainToLevel(seaLevel);//just need to know what parts of the island are above water
 			
 			if(animateGeneration)
@@ -114,7 +120,8 @@ public class MeshGenerator : MonoBehaviour
 				yield return new WaitForSeconds(1f);
 			}
 			
-			meshModifier.BlendBiomes(2, zSize);//cleans up biome 
+			islandUI.SetGenerationText("Blending Biomes");
+			meshModifier.BlendBiomes(2, zSize);//cleans up biome borders
 			
 			if(animateGeneration)
 			{//wait after biomes blended
@@ -126,6 +133,8 @@ public class MeshGenerator : MonoBehaviour
 		VolcanoGenerator vg  = GetComponent<VolcanoGenerator>();
 		if(vg.generateVolcano)
 		{
+			
+			islandUI.SetGenerationText("Building Volcano");
 			yield return StartCoroutine(vg.BuildVolcano());
 			
 			if(animateGeneration)
@@ -135,41 +144,48 @@ public class MeshGenerator : MonoBehaviour
 			}
 		}
 		
-		if(jiggleVertices)
+		if(SmoothTerraceVertices)
 		{
-			meshModifier.JiggleVertices(seaLevel);//jiggle to add roughness to terrain
+			islandUI.SetGenerationText("Smooth Terracing Island");
+			meshModifier.SmoothTerraceTerrain(terraceHeight);
 			UpdateMesh();
 			yield return new WaitForSeconds(1f);
 		}
 		
-		if(terraceVertices)
-			meshModifier.TerraceTerrain(terraceHeight);
-		UpdateMesh();
+		if(jiggleVertices)
+		{
+			islandUI.SetGenerationText("Jiggling Vertices");
+			meshModifier.JiggleVertices(seaLevel);//jiggle to add roughness to terrain
+		}
+		UpdateMesh();//ensures the mesh is updated on all code paths at the end
 		
 		if(animateGeneration)
-		{//wait after vertices terraced
+		{//wait after vertices jiggled
 			yield return new WaitForSeconds(1f);
 		}
 		
 		//Place props
 		if(generateProps)
 		{
-			PropPlacement propPlacer = new PropPlacement(GetComponent<MeshCollider>(), GetComponent<BiomeGenerator>(), 
-				GetComponent<VolcanoGenerator>(), propPrefab);
+			islandUI.SetGenerationText("Placing Props");
+			PropPlacement propPlacer = new PropPlacement(GetComponent<MeshCollider>(), bg, vg, propPrefab);
 			propPlacer.PlaceProps(transform, propsToTryToPlace, xSize, zSize, seaLevel);
 		
 			if(animateGeneration)
 			{//wait after props generated
-				UpdateMesh();
 				yield return new WaitForSeconds(1f);
 			}
 		}
 		
+		islandUI.SetGenerationText("Pausing for Viewing Pleasure");
 		if(animateGeneration)//pause at end of generation
 			yield return new WaitForSeconds(3f);
 		
+		islandUI.SetGenerationText("Readying Player");
 		Instantiate(player, vertices[vertices.Length/2], Quaternion.identity);
 		surface.BuildNavMesh();
+		
+		islandUI.SetGenerationPanelActive(false);//Hide readout panel
 	}
 	
 	/*

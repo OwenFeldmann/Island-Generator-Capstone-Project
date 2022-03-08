@@ -22,9 +22,9 @@ public class BiomeGenerator : MonoBehaviour
 		if(!generateBiomes)
 			yield break;
 		
-        MeshGenerator meshGenerator = GetComponent<MeshGenerator>();
-		GenerateBiomePoints(meshGenerator.xCenter, meshGenerator.zCenter);
-		yield return StartCoroutine(GenerateBiomeTerrain(meshGenerator.vertices, meshGenerator.vertexColors, meshGenerator.biomes, meshGenerator.seaLevel));
+        MeshGenerator mg = GetComponent<MeshGenerator>();
+		GenerateBiomePoints(mg.xCenter, mg.zCenter);
+		yield return StartCoroutine(GenerateBiomeTerrain(mg.vertices, mg.vertexColors, mg.biomes, mg.seaLevel));
     }
 	
 	/*
@@ -48,6 +48,9 @@ public class BiomeGenerator : MonoBehaviour
 	*/
 	private IEnumerator GenerateBiomeTerrain(Vector3[] vertices, Color[] colors, Biome[] biomes, float seaLevel)
 	{
+		IslandUI islandUI = GameObject.Find("UI").GetComponent<IslandUI>();
+		islandUI.SetGenerationText("Determining Biome Regions");
+		
 		//setup biomes array and color map with Voronoi noise
 		for(int i = 0; i < vertices.Length; i++)
 		{
@@ -71,6 +74,7 @@ public class BiomeGenerator : MonoBehaviour
 			yield return new WaitForSeconds(1f);
 		}
 		
+		islandUI.SetGenerationText("Generating Biome Terrain");
 		//Generate actual biome heights and colors
 		for(int i = 0; i < vertices.Length; i++)
 		{

@@ -16,7 +16,7 @@ public class MeshGenerator : MonoBehaviour
 	
 	public bool animateGeneration = true;
 	public bool jiggleVertices = true;
-	public bool SmoothTerraceVertices = false;
+	public bool smoothTerraceVertices = false;
 	public float terraceHeight = 1f;
 	
 	[Header("World Shape")]
@@ -66,13 +66,47 @@ public class MeshGenerator : MonoBehaviour
 	private Coroutine generateIslandCorountine;
 	private float maxHeight = 0f;
 	
+	private Vector3 cameraStartPosition, cameraStartRotation;
+	
+	void Start()
+	{
+		//save starting camera transform info for later reloads
+		Transform camera = GameObject.Find("VirtualCamera").transform;
+		cameraStartPosition = camera.position;
+		cameraStartRotation = camera.eulerAngles;
+	}
+	
 	/*
 	Script starting location. Creates and displays generated terrain mesh.
 	*/
-    void Start()
-    {
-        generateIslandCorountine = StartCoroutine(GenerateIsland());
-    }
+	public void StartIslandGeneration()
+	{
+		ClearExistingIsland();
+		Transform camera = GameObject.Find("VirtualCamera").transform;
+		camera.position = cameraStartPosition;
+		camera.eulerAngles = cameraStartRotation;
+		generateIslandCorountine = StartCoroutine(GenerateIsland());
+	}
+	
+	/*
+	Remove props added in previous generation cycles
+	*/
+	private void ClearExistingIsland()
+	{
+		GameObject player = GameObject.Find("Player(Clone)");
+		if(player != null)
+			Destroy(player);
+		
+		GameObject volcanoSmoke = GameObject.Find("Volcano Smoke(Clone)");
+		if(volcanoSmoke != null)
+			Destroy(volcanoSmoke);
+		
+		foreach(Transform child in transform)
+		{
+			Destroy(child.gameObject);
+		}
+		
+	}
 	
 	IEnumerator GenerateIsland()
 	{
@@ -144,7 +178,7 @@ public class MeshGenerator : MonoBehaviour
 			}
 		}
 		
-		if(SmoothTerraceVertices)
+		if(smoothTerraceVertices)
 		{
 			islandUI.SetGenerationText("Smooth Terracing Island");
 			meshModifier.SmoothTerraceTerrain(terraceHeight);

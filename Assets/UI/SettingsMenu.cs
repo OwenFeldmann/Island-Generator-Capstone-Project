@@ -46,6 +46,10 @@ public class SettingsMenu : MonoBehaviour
 	public InputField startSpreadInputField;
 	public InputField endSpreadInputField;
 	
+	[Header("Misc Settings")]
+	public InputField propAttemptsInputField;
+	public InputField terraceHeightInputField;
+	
 	public void ViewIsland()
 	{
 		settingsMenu.SetActive(false);
@@ -116,6 +120,10 @@ public class SettingsMenu : MonoBehaviour
 			vg.startSpread = vg.endSpread;
 			vg.endSpread = temp;
 		}
+		
+		//Misc Settings
+		mg.propsToTryToPlace = Mathf.Abs(int.Parse(propAttemptsInputField.text));
+		mg.terraceHeight = Mathf.Abs(float.Parse(terraceHeightInputField.text));
 		
 		mg.StartIslandGeneration();
 	}

@@ -36,12 +36,10 @@ public class Noise
 	}
 	
 	/*
-	Seeds noise function by deciding an offset. Chooses a random seed when the given seed is 0.
+	Seeds noise function by deciding an offset.
 	*/
 	public static void SeedNoise(int seed)
 	{
-		if(seed == 0)
-			seed = Random.Range(-10000,10000);
 		Random.InitState(seed);
 		xOffset = Random.Range(-10000, 10000);
 		zOffset = Random.Range(-10000, 10000);

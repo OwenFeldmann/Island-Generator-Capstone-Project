@@ -66,12 +66,22 @@ public class MeshModifier
 	
 	/*
 	Averages every point with the surrounding points based on the given square radius.
-	Assumes there are no land points within the given radius of the edge of the map.
+	Ignores land points within the given radius of the edge of the map.
 	*/
 	public void BlendBiomes(int radius, int zSize)
 	{
 		for(int i = 0; i < vertices.Length; i++)
 		{
+			//Avoid out of bounds errors on borders
+			if(i < radius * zSize)//bottom
+				continue;
+			if(i > vertices.Length - radius *zSize)//top
+				continue;
+			if(i % zSize < radius)//left
+				continue;
+			if(i % zSize > zSize - radius)//right
+				continue;
+			
 			if(CanBlendThisBiomeAt(i))
 			{
 				int pointsInHeightAverage = 0;

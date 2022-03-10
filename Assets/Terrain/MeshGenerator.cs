@@ -40,8 +40,9 @@ public class MeshGenerator : MonoBehaviour
 	public GameObject waterPlane;
 	
 	[Header("Noise Settings")]
-	//Seeds the noise function. Uses a random seed when set to 0.
-	public int noiseSeed = 0;
+	public bool useRandomSeed = true;
+	//Seeds the noise function.
+	public int seed = 0;
 	//Decrease to stretch terrain along the x-axis.
 	public float noiseXScale = 0.3f;
 	//Decrease to stretch terrain along the z-axis.
@@ -116,12 +117,18 @@ public class MeshGenerator : MonoBehaviour
 		
 		//setup water plane
 		//seaLevel-1 so that waves don't come on land
-		waterPlane.transform.position = new Vector3(xCenter, seaLevel-1, zCenter);
+		//xSize/2 to place in center. xCenter is not always center
+		waterPlane.transform.position = new Vector3(xSize/2, seaLevel-1, zSize/2);
 		
 		mesh = new Mesh();
 		GetComponent<MeshFilter>().mesh = mesh;
 		
-		Noise.SeedNoise(noiseSeed);
+		if(useRandomSeed)
+		{
+			seed = Random.Range(-10000,10000);
+			GameObject.Find("UI").GetComponent<SettingsMenu>().seedInputField.text = seed.ToString();
+		}
+		Noise.SeedNoise(seed);
 		
 		islandUI.SetGenerationText("Generating Mesh with Heightmap");
 		CreateMesh();

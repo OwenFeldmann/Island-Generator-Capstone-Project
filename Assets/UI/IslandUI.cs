@@ -17,7 +17,8 @@ public class IslandUI : MonoBehaviour
 		{
 			s.StopAllCoroutines();
 		}
-			
+		
+		GetComponent<SettingsMenu>().viewIslandButton.interactable = true;
 		settingsMenu.SetActive(true);
 		islandMenu.SetActive(false);	
 	}

@@ -24,8 +24,14 @@ public class SettingsMenu : MonoBehaviour
 	public Slider zSizeSlider;
 	public Slider xCenterSlider;
 	public Slider zCenterSlider;
+	public Slider xNoiseScaleSlider;
+	public Slider zNoiseScaleSlider;
 	public InputField seaLevelInputField;
 	public InputField falloffRateInputField;
+	
+	[Header("Biome Settings")]
+	public InputField biomeCountInputField;
+	public InputField biomeSpreadInputField;
 	
 	public void ViewIsland()
 	{
@@ -66,8 +72,16 @@ public class SettingsMenu : MonoBehaviour
 		mg.zCenter = (int) zCenterSlider.value;
 		if(mg.zCenter > mg.zSize)//center can't be outside of bounds
 			mg.zCenter = mg.zSize/2;
-		mg.seaLevel = float.Parse(seaLevelInputField.text);
+		mg.noiseXScale = xNoiseScaleSlider.value;
+		mg.noiseZScale = zNoiseScaleSlider.value;
+		mg.seaLevel = Mathf.Abs(float.Parse(seaLevelInputField.text));
 		mg.distanceFromCenterFalloffRate = float.Parse(falloffRateInputField.text);
+		
+		//Biome Settings
+		bg.biomesToPlace = int.Parse(biomeCountInputField.text);
+		if(bg.biomesToPlace < 1)
+			bg.biomesToPlace = 1;
+		bg.maxBiomeSpread = Mathf.Abs(float.Parse(biomeSpreadInputField.text));
 		
 		mg.StartIslandGeneration();
 	}

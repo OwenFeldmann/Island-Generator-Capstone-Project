@@ -2573,6 +2573,7 @@ MonoBehaviour:
   propsToTryToPlace: 10000
   propPrefab: {fileID: 2390797387660001342, guid: 6dc7bc57e6036b74b90ed57f5c389fa7, type: 3}
   surface: {fileID: 442627833}
+  waterVolume: {fileID: 678924145}
   player: {fileID: 4033231023815958718, guid: 528f3b92a7ca8e84bb54ffb1ec53d3f1, type: 3}
 --- !u!23 &527093301
 MeshRenderer:
@@ -3826,7 +3827,7 @@ GameObject:
   - component: {fileID: 678924144}
   - component: {fileID: 678924145}
   m_Layer: 0
-  m_Name: Water
+  m_Name: Water Navmesh Volume
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

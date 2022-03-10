@@ -83,9 +83,7 @@ public class BiomeGenerator : MonoBehaviour
 				//Vertex height
 				float noiseValue = Noise.NoiseValue(vertices[i].x, vertices[i].z, biomes[i].noiseXScale, biomes[i].noiseZScale, biomes[i].noiseOctaves, biomes[i].octaveFrequencyScale, biomes[i].octaveAmplitudeScale, true);
 				float y = biomes[i].heightCurve.Evaluate(noiseValue) * biomes[i].amplitudeScale;
-				if(y < seaLevel)
-					y = seaLevel;
-				vertices[i].y = y;
+				vertices[i].y += y;
 				
 				//Color biome
 				colors[i] = biomes[i].gradient.Evaluate(noiseValue);

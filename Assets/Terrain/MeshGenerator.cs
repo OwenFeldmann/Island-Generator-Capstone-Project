@@ -62,6 +62,7 @@ public class MeshGenerator : MonoBehaviour
 	
 	[Header("Nav Mesh")]
 	public NavMeshSurface surface;
+	public NavMeshModifierVolume waterVolume;
 	public GameObject player;
 	
 	private Coroutine generateIslandCorountine;
@@ -162,7 +163,7 @@ public class MeshGenerator : MonoBehaviour
 			}
 			
 			islandUI.SetGenerationText("Blending Biomes");
-			meshModifier.BlendBiomes(2, zSize);//cleans up biome borders
+			meshModifier.BlendBiomes(2, zSize, seaLevel);//cleans up biome borders
 			
 			if(animateGeneration)
 			{//wait after biomes blended
@@ -209,7 +210,7 @@ public class MeshGenerator : MonoBehaviour
 		if(generateProps)
 		{
 			islandUI.SetGenerationText("Placing Props");
-			PropPlacement propPlacer = new PropPlacement(GetComponent<MeshCollider>(), bg, vg, propPrefab);
+			PropPlacement propPlacer = new PropPlacement(GetComponent<MeshCollider>(), this, bg, vg, propPrefab);
 			propPlacer.PlaceProps(transform, propsToTryToPlace, xSize, zSize, seaLevel);
 		
 			if(animateGeneration)
@@ -222,7 +223,8 @@ public class MeshGenerator : MonoBehaviour
 		if(animateGeneration)//pause at end of generation
 			yield return new WaitForSeconds(3f);
 		
-		islandUI.SetGenerationText("Readying Player");
+		//seaLevel doubled because the region expands up and down.
+		waterVolume.size = new Vector3(waterVolume.size.x, seaLevel*2, waterVolume.size.z);
 		Instantiate(player, vertices[vertices.Length/2], Quaternion.identity);
 		surface.BuildNavMesh();
 		

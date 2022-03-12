@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class SettingsMenu : MonoBehaviour
 {
 	
-	public GameObject settingsMenu, islandMenu;
+	public GameObject settingsMenu, islandMenu, settingsExplanationMenu;
 	public Button viewIslandButton;
 	
 	[Header("Settings Overview")]
@@ -54,6 +54,18 @@ public class SettingsMenu : MonoBehaviour
 	{
 		settingsMenu.SetActive(false);
 		islandMenu.SetActive(true);
+	}
+	
+	public void ViewSettingsExplanation()
+	{
+		settingsExplanationMenu.SetActive(true);
+		settingsMenu.SetActive(false);
+	}
+	
+	public void BackToSettings()
+	{
+		settingsMenu.SetActive(true);
+		settingsExplanationMenu.SetActive(false);
 	}
 	
 	public void GenerateIsland()

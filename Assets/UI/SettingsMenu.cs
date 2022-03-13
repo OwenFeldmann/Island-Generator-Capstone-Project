@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class SettingsMenu : MonoBehaviour
 {
 	
-	public GameObject settingsMenu, islandMenu, settingsExplanationMenu;
+	public GameObject settingsMenu, islandMenu, settingsExplanationMenu, howToExportFbxMenu;
 	public Button viewIslandButton;
 	
 	[Header("Settings Overview")]
@@ -62,10 +62,17 @@ public class SettingsMenu : MonoBehaviour
 		settingsMenu.SetActive(false);
 	}
 	
+	public void ViewHowToExportFbxMenu()
+	{
+		howToExportFbxMenu.SetActive(true);
+		settingsMenu.SetActive(false);
+	}
+	
 	public void BackToSettings()
 	{
 		settingsMenu.SetActive(true);
 		settingsExplanationMenu.SetActive(false);
+		howToExportFbxMenu.SetActive(false);
 	}
 	
 	public void GenerateIsland()

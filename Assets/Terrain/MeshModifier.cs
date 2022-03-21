@@ -54,9 +54,9 @@ public class MeshModifier
 	}
 	
 	/*
-	Turns the terrain into terraces of specified height, rather than smooth slopes
+	Turns the terrain into smooth terraces of specified height, rather than smooth slopes
 	*/
-	public void TerraceTerrain(float terraceHeight)
+	public void SmoothTerraceTerrain(float terraceHeight)
 	{
 		for(int i = 0; i < vertices.Length; i++)
 		{
@@ -66,13 +66,23 @@ public class MeshModifier
 	
 	/*
 	Averages every point with the surrounding points based on the given square radius.
-	Assumes there are no land points within the given radius of the edge of the map.
+	Ignores land points within the given radius of the edge of the map.
 	*/
-	public void BlendBiomes(int radius, int zSize)
+	public void BlendBiomes(int radius, int zSize, float seaLevel)
 	{
 		for(int i = 0; i < vertices.Length; i++)
 		{
-			if(CanBlendThisBiomeAt(i))
+			//Avoid out of bounds errors on borders
+			if(i < radius * zSize)//bottom
+				continue;
+			if(i > vertices.Length - radius *zSize)//top
+				continue;
+			if(i % zSize < radius)//left
+				continue;
+			if(i % zSize > zSize - radius)//right
+				continue;
+			
+			if(CanBlendThisBiomeAt(i, seaLevel))
 			{
 				int pointsInHeightAverage = 0;
 				float totalHeight = 0f;
@@ -85,7 +95,7 @@ public class MeshModifier
 					{
 						int p = i+z+x;
 						
-						if(!ExcludePointAsHeightOutlier(p, i))
+						if(!ExcludePointAsHeightOutlier(p, i, seaLevel))
 						{
 							pointsInHeightAverage++;
 							totalHeight += vertices[p].y;
@@ -113,13 +123,13 @@ public class MeshModifier
 	/*
 	Returns false if the biome at a point should not be blended
 	*/
-	private bool CanBlendThisBiomeAt(int i)
+	private bool CanBlendThisBiomeAt(int i, float seaLevel)
 	{
 		if(biomes[i] == null)
 			return false;//don't blend the sea
 		if(biomes[i].name == "Plateau")
 			return false;//don't blend the plateau. Try to maintain the cliff edge
-		if(biomes[i].name == "Pointy Mountains" && vertices[i].y >= 10f)
+		if(biomes[i].name == "Pointy Mountains" && vertices[i].y >= seaLevel + 7f)
 			return false;//don't flatten the spikes in the pointy mountains
 		
 		return true;
@@ -128,7 +138,7 @@ public class MeshModifier
 	/*
 	Returns true if the height at this point should be excluded from the blending average
 	*/
-	private bool ExcludePointAsHeightOutlier(int i, int basePoint)
+	private bool ExcludePointAsHeightOutlier(int i, int basePoint, float seaLevel)
 	{
 		if(biomes[i] == null)
 			return false;//needed a null check. Reduce sheer cliffs at sea edge
@@ -145,7 +155,7 @@ public class MeshModifier
 			}
 		}
 			
-		if(biomes[i].name == "Pointy Mountains" && vertices[i].y >= 10f)
+		if(biomes[i].name == "Pointy Mountains" && vertices[i].y >= seaLevel + 7f)
 			return true;//the spikes in this biome are outliers
 		
 		

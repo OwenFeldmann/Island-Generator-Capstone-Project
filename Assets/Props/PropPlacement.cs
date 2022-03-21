@@ -5,6 +5,7 @@ using UnityEngine;
 public class PropPlacement
 {
 	private MeshCollider island;
+	private MeshGenerator mg;
 	private BiomeGenerator biomeGen;
 	private VolcanoGenerator vg;
 	private GameObject propPrefab;
@@ -12,9 +13,10 @@ public class PropPlacement
 	private float minDistanceBetweenProps = 0.5f;
 	private float maxVolcanoRadius;
 	
-	public PropPlacement(MeshCollider islandCollider, BiomeGenerator biomeGen, VolcanoGenerator vg, GameObject propPrefab)
+	public PropPlacement(MeshCollider islandCollider, MeshGenerator mg, BiomeGenerator biomeGen, VolcanoGenerator vg, GameObject propPrefab)
 	{
 		this.island = islandCollider;
+		this.mg = mg;
 		this.biomeGen = biomeGen;
 		this.vg = vg;
 		this.propPrefab = propPrefab;
@@ -111,7 +113,7 @@ public class PropPlacement
 				<= maxVolcanoRadius)
 			return false;
 		
-		if(biome.name == "Pointy Mountains" && loc.y >= 6.5f)
+		if(biome.name == "Pointy Mountains" && loc.y >= mg.seaLevel + 5f)
 			return false;
 		
 		foreach(Transform child in propHolder)

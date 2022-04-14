@@ -163,7 +163,7 @@ public class MeshGenerator : MonoBehaviour
 			}
 			
 			islandUI.SetGenerationText("Blending Biomes");
-			meshModifier.BlendBiomes(2, zSize, seaLevel);//cleans up biome borders
+			meshModifier.BlendBiomes(2, xSize, seaLevel);//cleans up biome borders
 			
 			if(animateGeneration)
 			{//wait after biomes blended
@@ -225,10 +225,29 @@ public class MeshGenerator : MonoBehaviour
 		
 		//seaLevel doubled because the region expands up and down.
 		waterVolume.size = new Vector3(waterVolume.size.x, seaLevel*2, waterVolume.size.z);
-		Instantiate(player, vertices[vertices.Length/2], Quaternion.identity);
-		surface.BuildNavMesh();
+		SpawnPlayer();
 		
 		islandUI.SetGenerationPanelActive(false);//Hide readout panel
+	}
+	
+	/*
+	Spawns the player at the island's center and initialize the NavMesh
+	*/
+	private void SpawnPlayer()
+	{
+		Ray ray = new Ray(new Vector3(xCenter, 100f, zCenter), Vector3.down);
+		RaycastHit hit;
+		
+		if(GetComponent<MeshCollider>().Raycast(ray, out hit, 300f))
+		{
+			if(hit.point.y >= seaLevel)//don't place player underwater
+			{
+				Instantiate(player, hit.point, Quaternion.identity);
+				surface.BuildNavMesh();
+			}
+			else
+				Debug.Log("Attempted to place player underwater. No player placed.");
+		}
 	}
 	
 	/*

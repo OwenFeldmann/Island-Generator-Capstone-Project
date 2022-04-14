@@ -68,18 +68,18 @@ public class MeshModifier
 	Averages every point with the surrounding points based on the given square radius.
 	Ignores land points within the given radius of the edge of the map.
 	*/
-	public void BlendBiomes(int radius, int zSize, float seaLevel)
+	public void BlendBiomes(int radius, int xSize, float seaLevel)
 	{
 		for(int i = 0; i < vertices.Length; i++)
 		{
 			//Avoid out of bounds errors on borders
-			if(i < radius * zSize)//bottom
+			if(i < (radius+1) * xSize)//bottom
 				continue;
-			if(i > vertices.Length - radius *zSize)//top
+			if(i > vertices.Length - (radius+1) * xSize)//top
 				continue;
-			if(i % zSize < radius)//left
+			if(i % xSize < radius+1)//left
 				continue;
-			if(i % zSize > zSize - radius)//right
+			if(i % xSize > xSize - (radius+1))//right
 				continue;
 			
 			if(CanBlendThisBiomeAt(i, seaLevel))
@@ -89,7 +89,7 @@ public class MeshModifier
 				int pointsInColorAverage = 0;
 				float totalRed = 0f, totalGreen = 0f, totalBlue = 0f;
 				
-				for(int z = -radius * zSize; z <= radius * zSize; z += zSize)
+				for(int z = -radius * xSize; z <= radius * xSize; z += xSize)
 				{
 					for(int x = -radius; x <= radius; x++)
 					{
